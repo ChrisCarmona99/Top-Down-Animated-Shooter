@@ -17,6 +17,7 @@ GAMEOVER_BACKGROUND = (700, 1000)
 PLAY_AGAIN = (650, 250)
 EXIT = (650, 250)
 
+# Initialize
 
 
 def MAIN_MENU():
@@ -24,6 +25,10 @@ def MAIN_MENU():
     FONT = pygame.font.SysFont( "Times New Roman, Arial", 100)
     Play_TEXT = FONT.render( "Play", True, RED )
     Help_TEXT = FONT.render( "Help", True, RED )
+
+    EnemyCount = 0
+    Countdown = 1
+    firstRound = 1
 
     runningMainMenu = True
     runningGame = False
@@ -38,7 +43,7 @@ def MAIN_MENU():
         screen.blit( Help_TEXT, ( displayWidth / 2 - Help_TEXT.get_rect().width / 2, displayHeight / 2 - Help_TEXT.get_rect().height / 2 + 300) )
 
         if runningGame or runningPauseMenu:
-            GAMEPLAY(selectedArrow)
+            GAMEPLAY(selectedArrow, EnemyCount, Countdown, firstRound)
             runningGame = False
 
         for event in pygame.event.get():
@@ -52,6 +57,7 @@ def MAIN_MENU():
                         mousePos[1] <= centerText(PLAY)[1] + PLAY[1]):
                     print("Running Game")
                     runningGame = True
+                    RESET()
                 if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
                         mousePos[1] <= centerText(HELP)[1] + HELP[1] + 300):
                     print("Help Menu")
@@ -61,56 +67,84 @@ def MAIN_MENU():
 
 
 
-def GAMEPLAY(Selected_Arrow):
-
-    EnemyCount = 0
-    enemySpawnTimer = 10
-    Countdown = 1
-    MaximumEnemies = 3
-
-    move = [False, False, False, False]
-
+def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
     runningGame = True
     runningPauseMenu = False
-    restartGame = True
+    restartGame = False
 
+    move = [False, False, False, False]
+    Shooting = False
+    ShootTimer = 0
+
+    beginRound = True
+    ROUND_COUNTER = currentRound
+    roundBufferTimer = 75
+
+    enemySpawnTimer = 100
+    Countdown = CountDownSet
+    MaximumEnemies = 40
 
     while runningGame:
 
         screen.fill(0)
         screen.blit(highResBackground, (0, 0))
 
+        if beginRound:
+            DISPLAY_WAVE(ROUND_COUNTER)
+            Countdown = CountDownSet
+            beginRound = False
+
         if runningPauseMenu:
             x = PAUSE_MENU()
             runningGame = x[0]
             runningPauseMenu = x[1]
 
+
         Player1.playerSetup()
         Player1.update()
 
-        # arrowControl()  # Runs Arrow CONTROL
 
+        # Enemy Spawn Logic:
         if enemySpawnTimer <= 0:
             SpawnLocation = generateEnemySpawnCoordinates()
-            ENEMY_LIST.append(generateEnemy(SpawnLocation))  # Appends a new enemy object to our "enemyList", essentially generating a new enemy.
+            if len(ENEMY_LIST) < 12:
+                ENEMY_LIST.append(generateEnemy(SpawnLocation))  # Appends a new enemy object to our "enemyList", essentially generating a new enemy.
             EnemyCount += 1
             enemySpawnTimer = 50
         elif enemySpawnTimer != 0:
             enemySpawnTimer -= Countdown
 
-        if EnemyCount == MaximumEnemies:
+        # End of Round Logic:
+        if EnemyCount == MaximumEnemies: # Nulls enemy spawn countdown as soon as all enemies have been spawned
             Countdown = 0
+        if len(ENEMY_LIST) == 0 and EnemyCount == MaximumEnemies: # Executes next round logic once all enemies are killed
+            roundBufferTimer -= 1
+            if roundBufferTimer == 0:
+                roundBufferTimer = 75
+                EnemyCount = 0
+                ROUND_COUNTER += 1
+                beginRound = True
+
 
         arrowControl()  # Runs Arrow CONTROL
-
         playerDied = arrowSelection()  # Runs Arrow HITS, returns true or false if player health == 0
 
+
+        # Player Death Logic:
         if playerDied:
-            DRAW_GAMEOVER()
-            y = GAMEOVER_MENU()
+            DRAW_GAMEOVER() # Draws 'You Died'
+            y = GAMEOVER_MENU() # Runs the Game Over Menu
             runningGame = y[0]
             restartGame = y[1]
-            playerDied = y[2]
+        if restartGame:
+            RESET()
+            move = [False, False, False, False]
+            roundBufferTimer = 75
+            Countdown = 1
+            EnemyCount = 0
+            ROUND_COUNTER = 1
+            beginRound = True
+            restartGame = False
 
 
 
@@ -150,12 +184,8 @@ def GAMEPLAY(Selected_Arrow):
                 # TEST KEYS:
                 if event.key == K_e:
                     Player1.getHealth(25)
-                    print("Health ADDED: " + str(25))
-                    print("Current Health: " + str(Player1.targetHealth))
                 if event.key == K_q:
                     Player1.getDamage(30)
-                    print("Health LOST: " + str(30))
-                    print("Current Health: " + str(Player1.targetHealth))
                 if event.key == K_r:
                     ARROW_LIST.clear()
                 if event.key == K_f:
@@ -163,9 +193,6 @@ def GAMEPLAY(Selected_Arrow):
                 if event.key == K_x:
                     SpawnLocation = generateEnemySpawnCoordinates()
                     ENEMY_LIST.append(generateEnemy(SpawnLocation))
-                if event.key == K_c:
-                    print("Player Health: " + str(Player1.targetHealth))
-
 
 
             if event.type == pygame.KEYUP:
@@ -179,11 +206,10 @@ def GAMEPLAY(Selected_Arrow):
                     move[3] = False
 
             if event.type == MOUSEBUTTONDOWN:
-                if Selected_Arrow == "Basic_Arrow" or "Steel_Arrow" or "HollowPoint_Arrow" or "Tri_Arrow" or "Frost_Arrow":
-                    Arrow_Type.Basic_Coordinates()
+                Shooting = True
             if event.type == MOUSEBUTTONUP:
-                if Selected_Arrow == "Basic_Arrow" or "Steel_Arrow" or "HollowPoint_Arrow" or "Tri_Arrow" or "Frost_Arrow":
-                    pass
+                Shooting = False
+
 
         if move[0]:
             Player1.spawnPos[1] += -Player1.playerSpeed
@@ -203,6 +229,15 @@ def GAMEPLAY(Selected_Arrow):
         if Player1.spawnPos[1] >= displayHeight:
             move[1] = False
 
+
+        if Shooting:
+            if ShootTimer == 0:
+                SHOOT(Selected_Arrow)
+                ShootTimer = 15 # Sets the time between arrow shots... basically defines fire rate
+        if ShootTimer != 0: # This if statement ensures the player can never fire off arrows faster than the defined 'ShootTimer"
+            ShootTimer -= 1
+
+
         pygame.display.update()
         clock.tick(120)
 
@@ -216,6 +251,7 @@ def PAUSE_MENU():
 
     runningGame = True
     runningPauseMenu = True
+
 
     while runningPauseMenu:
         pygame.draw.rect(screen, LIGHTGREY, [centerText(PAUSE_BACKGROUND)[0], centerText(PAUSE_BACKGROUND)[1], PAUSE_BACKGROUND[0], PAUSE_BACKGROUND[1]])
@@ -239,11 +275,14 @@ def PAUSE_MENU():
                         mousePos[1] <= centerText(QUIT)[1] + QUIT[1] + 300):
                     runningPauseMenu = False
                     runningGame = False
+                    # RESET_GAME()
 
         pygame.display.update()
         clock.tick(120)
 
     return runningGame, runningPauseMenu
+
+
 
 
 
@@ -259,7 +298,6 @@ def DRAW_GAMEOVER():
     gameOverTimer = 100
 
     while drawGameOver:
-        print(gameOverTimer)
         pygame.draw.rect( screen, DARKGREY, [ centerText(YOU_DIED_BACKGROUND)[0], centerText(YOU_DIED_BACKGROUND)[1], YOU_DIED_BACKGROUND[0], YOU_DIED_BACKGROUND[1] ] )
         screen.blit( You_Died_TEXT, ( displayWidth / 2 - You_Died_TEXT.get_rect().width / 2, displayHeight / 2 - You_Died_TEXT.get_rect().height / 2 ) )
         gameOverTimer -= 1
@@ -308,15 +346,15 @@ def GAMEOVER_MENU():
                     runningGameOverMenu = False
                     runningGame = False
                     restartGame = False
+                    RESET()
 
         pygame.display.update()
         clock.tick(120)
 
-    return runningGame, restartGame, runningGameOverMenu
+    return runningGame, restartGame
 
 
 
 
-
-
+# Runs The game:
 MAIN_MENU()

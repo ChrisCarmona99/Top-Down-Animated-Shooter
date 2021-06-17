@@ -17,7 +17,7 @@ class Enemy:
         self.idleTimer = 100
 
         # Defines/Initializes the hitBox and origin of the radius for the hitbox
-        self.hitBox = 40 # Radius of the hitbox
+        self.hitBox = 45 # Radius of the hitbox
         self.hitEpicenter = 0
 
         self.xSpawnPos = xSpawnPos
