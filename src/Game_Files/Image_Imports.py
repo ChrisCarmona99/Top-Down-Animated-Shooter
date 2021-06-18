@@ -17,8 +17,9 @@ displayWidth = ctypes.windll.user32.GetSystemMetrics(0) - 200
 displayHeight = ctypes.windll.user32.GetSystemMetrics(1) - 200
 screen = pygame.display.set_mode((displayWidth, displayHeight))
 
-pygame.display.set_caption('Crossbow Battle')
+# bufferHeight = 100
 
+pygame.display.set_caption('Crossbow Battle')
 
 
 
@@ -44,11 +45,7 @@ ORANGE = (255, 153, 51)
 
 # Loads all the game images:
 highResBackground = pygame.image.load(ScriptPath_SurfaceBook2 + "resources/CrossbowGameImages/Dirt_Background_1200x800_HighRes.png").convert()
-lowResBackground = pygame.image.load(ScriptPath_SurfaceBook2 + "resources/CrossbowGameImages/Low_Res_Dirt_Background.png")
 mainMenuBackground = GOLDENROD
-
-#healthBar = pygame.image.load(ScriptPath_SurfaceBook2 + "resources/CrossbowGameImages/healthbar.png")
-#health = pygame.image.load(ScriptPath_SurfaceBook2 + "resources/CrossbowGameImages/Healthbar.png")
 
 player = pygame.image.load(ScriptPath_SurfaceBook2 + "resources/CrossbowGameImages/PixelGunman_84x59.png")
 

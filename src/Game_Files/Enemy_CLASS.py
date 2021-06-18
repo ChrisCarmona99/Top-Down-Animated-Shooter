@@ -2,12 +2,14 @@
 from Game_Files.Character_CLASS import *
 
 class Enemy:
-    def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, xSpawnPos, ySpawnPos):
+    def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, enemyScore, xSpawnPos, ySpawnPos):
         self.image = image
 
         self.enemyHealth = enemyHealth
         self.currentEnemyDamage = enemyDamage
         self.currentEnemySpeed = enemySpeed
+
+        self.enemyScore = enemyScore
 
         # Used to manipulate Enemy damage + pause after a successful hit against the player:
         self.activeDamage = enemyDamage

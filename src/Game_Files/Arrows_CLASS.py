@@ -10,6 +10,7 @@ Dead = "You died!"
 
 class Arrow:
     def __init__(self, arrowImage, arrowSpeed, arrowDamage):
+
         self.arrowImage = arrowImage
         self.arrowSpeed = arrowSpeed
         self.arrowDamage = arrowDamage
@@ -19,11 +20,14 @@ class Arrow:
 
 
     def setArrowParameters(self, image, speed, damage):
+
         self.arrowImage = image
         self.arrowSpeed = speed
         self.arrowDamage = damage
 
+
     def collisionDetection(self, pos1, pos2, hitBox1, hitBox2):
+
         dist = math.sqrt(((pos2[0] - pos1[0]) ** 2) + ((pos2[1] - pos1[1]) ** 2))
         if dist <= (hitBox1 + hitBox2):
             return True
@@ -32,21 +36,15 @@ class Arrow:
 
 
 
-
-
     def Basic_Coordinates(self):
 
         radConvert = (360 / (2 * math.pi))
         mousePos = pygame.mouse.get_pos()
-
         arrowAngle = math.atan2(mousePos[1] - Player1.spawnPos[1], mousePos[0] - Player1.spawnPos[0])
         arrowRotation = pygame.transform.rotate(self.arrowImage, 360 - arrowAngle * radConvert)
-
         self.hitEpicenter = [ Player1.spawnPos[0], Player1.spawnPos[1] ]
-
         currentArrowPos = (Player1.spawnPos[0] - arrowRotation.get_rect().width / 2,
                            Player1.spawnPos[1] - arrowRotation.get_rect().height / 2)
-
 
         ARROW_LIST.append([arrowAngle, currentArrowPos[0], currentArrowPos[1], self.hitEpicenter, self.hitBox])
 
@@ -72,6 +70,7 @@ class Arrow:
 
             # pygame.draw.circle( screen, PURPLE, [round(currArrow[3][0]), round(currArrow[3][1]) ], self.hitBox)
 
+
     def Basic_Hit(self):
 
         playerDied = False
@@ -90,19 +89,18 @@ class Arrow:
             if enemy.currentEnemyPos != Player1.spawnPos:
                 enemy.enemyMove()
 
-            # HANDLES ENEMY->PLAYER COLLISION
+            # HANDLES ENEMY<->PLAYER COLLISION:
             EnemyPlayerCollide = self.collisionDetection(Player1.hitEpicenter, enemy.hitEpicenter, Player1.hitBox, enemy.hitBox)
             if EnemyPlayerCollide:
                 Player1.getDamage(enemy.currentEnemyDamage)
                 enemy.currentEnemySpeed = enemy.idleSpeed
                 enemy.currentEnemyDamage = enemy.idleDamage
 
-                if Player1.currentHealth <= 0:
+                if Player1.targetHealth <= 0:
                     playerDied = True
                     return playerDied
 
-            # HANDLES ARROW->ENEMY COLLISION
-
+            # HANDLES ARROW<->ENEMY COLLISION:
             arrowIndex = 0
             for currArrow in ARROW_LIST:
                 ArrowEnemyCollide = self.collisionDetection(enemy.hitEpicenter, (currArrow[3][0], currArrow[3][1]), enemy.hitBox, currArrow[4])
@@ -110,7 +108,10 @@ class Arrow:
                     enemyHealth = enemy.enemyHealth - self.arrowDamage
                     ARROW_LIST.pop(arrowIndex)
                     if enemyHealth <= 0:
+                        Player1.playerScore += enemy.enemyScore
+                        #print(Player1.playerScore)
                         ENEMY_LIST.pop(enemyIndex)
+
                     elif enemyHealth > 0:
                         enemy.setEnemyHealth(enemyHealth)
                 arrowIndex += 1
@@ -120,8 +121,6 @@ class Arrow:
 
 
 
-
-    #
     # def HollowPoint_Hit(self):
     #     enemyIndex = 0
     #     for enemy in ENEMY_LIST:
@@ -216,4 +215,3 @@ class Arrow:
     #                     enemy.setEnemyHealth(enemyHealth)
     #             arrowIndex += 1
     #         enemyIndex += 1
-

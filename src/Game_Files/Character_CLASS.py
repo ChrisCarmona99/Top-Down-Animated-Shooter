@@ -7,10 +7,7 @@ class Character:
     def __init__(self, image, playerSpeed, playerHealth, WeaponType):
         self.image = image
         self.playerSpeed = playerSpeed
-        self.WeaponType = WeaponType
-
-        self.hitBox = 40
-        self.hitEpicenter = 0
+        self.resetPlayerSpeed = playerSpeed
 
         self.currentHealth = playerHealth
         self.targetHealth = playerHealth
@@ -18,6 +15,13 @@ class Character:
         self.healthBarLength = 800
         self.healthRatio = self.maximumHealth / self.healthBarLength
         self.healthChangeSpeed = 2.5
+
+        self.WeaponType = WeaponType
+
+        self.hitBox = 50
+        self.hitEpicenter = 0
+
+        self.playerScore = 0
 
         self.spawnPos = [displayWidth * 0.5 , displayHeight * 0.5]  # Initialized to the center of the screen
         self.currentPlayerPos = [0, 0]
@@ -51,12 +55,12 @@ class Character:
             transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
             transitionColor = YELLOW
 
-        healthBarRECT = pygame.Rect( 30, 30, self.currentHealth / self.healthRatio, 50 )
-        transitionBarRECT = pygame.Rect( healthBarRECT.right, 30, transitionWidth, 50 )
+        healthBarRECT = pygame.Rect( 15, 15, self.currentHealth / self.healthRatio, 50 )
+        transitionBarRECT = pygame.Rect( healthBarRECT.right, 15, transitionWidth, 50 )
 
         pygame.draw.rect( screen, RED, healthBarRECT )
         pygame.draw.rect( screen, transitionColor, transitionBarRECT )
-        pygame.draw.rect( screen, BLACK, (30, 30, self.healthBarLength, 50), 4 )
+        pygame.draw.rect( screen, BLACK, (15, 15, self.healthBarLength, 50), 4 )
 
 
 

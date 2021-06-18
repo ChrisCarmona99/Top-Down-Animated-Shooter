@@ -55,7 +55,6 @@ def MAIN_MENU():
                 mousePos = pygame.mouse.get_pos()
                 if (centerText(PLAY)[0] <= mousePos[0] <= centerText(PLAY)[0] + PLAY[0] and centerText(PLAY)[1] <=
                         mousePos[1] <= centerText(PLAY)[1] + PLAY[1]):
-                    print("Running Game")
                     runningGame = True
                     RESET()
                 if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
@@ -72,6 +71,8 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
     runningPauseMenu = False
     restartGame = False
 
+
+
     move = [False, False, False, False]
     Shooting = False
     ShootTimer = 0
@@ -82,7 +83,7 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
 
     enemySpawnTimer = 100
     Countdown = CountDownSet
-    MaximumEnemies = 40
+    MaximumEnemies = 30
 
     while runningGame:
 
@@ -92,6 +93,7 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
         if beginRound:
             DISPLAY_WAVE(ROUND_COUNTER)
             Countdown = CountDownSet
+            move = [False, False, False, False]
             beginRound = False
 
         if runningPauseMenu:
@@ -101,13 +103,12 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
 
 
         Player1.playerSetup()
-        Player1.update()
 
 
         # Enemy Spawn Logic:
         if enemySpawnTimer <= 0:
             SpawnLocation = generateEnemySpawnCoordinates()
-            if len(ENEMY_LIST) < 12:
+            if len(ENEMY_LIST) < 10: # Sets maximum amount of enemies that can be spawned at a time
                 ENEMY_LIST.append(generateEnemy(SpawnLocation))  # Appends a new enemy object to our "enemyList", essentially generating a new enemy.
             EnemyCount += 1
             enemySpawnTimer = 50
@@ -129,6 +130,15 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
         arrowControl()  # Runs Arrow CONTROL
         playerDied = arrowSelection()  # Runs Arrow HITS, returns true or false if player health == 0
 
+
+        pygame.draw.rect(screen, DARKGREY, [0, 0, displayWidth, 80]) # Draws grey box at top of screen
+
+        playerScoreText = "Score: " + str(Player1.playerScore)
+        FONT = pygame.font.SysFont("Times New Roman, Ariel", 50)
+        PlayerScore_TEXT = FONT.render(playerScoreText, True, WHITE)
+        screen.blit( PlayerScore_TEXT, ( displayWidth - 250, 15 ) )
+
+        Player1.update() # Updates player's health bar
 
         # Player Death Logic:
         if playerDied:
@@ -222,7 +232,7 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
 
         if Player1.spawnPos[0] <= 0:
             move[2] = False
-        if Player1.spawnPos[1] <= 0:
+        if Player1.spawnPos[1] <= 80:
             move[0] = False
         if Player1.spawnPos[0] >= displayWidth:
             move[3] = False

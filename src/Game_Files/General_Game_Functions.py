@@ -31,6 +31,12 @@ def DISPLAY_WAVE(currentRound):
     while drawWaveCount:
         screen.blit( CurrentWave_TEXT, ( displayWidth / 2 - CurrentWave_TEXT.get_rect().width / 2, displayHeight / 2 - CurrentWave_TEXT.get_rect().height/2 - 300) )
         drawWaveCountTimer -= 1
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
         if drawWaveCountTimer == 0:
             drawWaveCount = False
 
@@ -44,6 +50,7 @@ def RESET():
     Player1.currentHealth = Player1.maximumHealth
     Player1.targetHealth = Player1.maximumHealth
     Player1.playerSpeed = Player1.resetPlayerSpeed
+    Player1.playerScore = 0
     ARROW_LIST.clear()
 
 
@@ -69,16 +76,16 @@ def generateEnemySpawnCoordinates():
 def generateEnemy(SpawnLocation):
     EnemySelect = randint(1, 4)
     if EnemySelect == 1:
-        SelectedEnemy = Enemy(enemy_one, 6, 10, 13, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = Enemy(enemy_one, 6, 10, 13, 10, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 2:
-        SelectedEnemy = Enemy(enemy_two, 4, 25, 21, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = Enemy(enemy_two, 4, 25, 21, 15, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 3:
-        SelectedEnemy = Enemy(enemy_three, 9, 45, 8, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = Enemy(enemy_three, 9, 45, 8, 20, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 4:
-        SelectedEnemy = Enemy(enemy_four, 3, 65, 32, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = Enemy(enemy_four, 3, 65, 32, 30, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
 
 
