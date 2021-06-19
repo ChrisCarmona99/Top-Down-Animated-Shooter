@@ -4,10 +4,18 @@ from Game_Files.Image_Imports import *
 playerInitialPos = [displayWidth * 0.5, displayHeight * 0.5]
 
 class Character:
+
     def __init__(self, image, playerSpeed, playerHealth, WeaponType):
         self.image = image
         self.playerSpeed = playerSpeed
         self.resetPlayerSpeed = playerSpeed
+        self.WeaponType = WeaponType
+
+        self.hitBox = 50
+        self.hitEpicenter = 0
+
+        self.spawnPos = [displayWidth * 0.5, displayHeight * 0.5]  # Initialized to the center of the screen
+        self.currentPlayerPos = [0, 0]
 
         self.currentHealth = playerHealth
         self.targetHealth = playerHealth
@@ -16,15 +24,10 @@ class Character:
         self.healthRatio = self.maximumHealth / self.healthBarLength
         self.healthChangeSpeed = 2.5
 
-        self.WeaponType = WeaponType
-
-        self.hitBox = 50
-        self.hitEpicenter = 0
+        self.INVENTORY = {'Gold' : 0, 'Basic_Arrows' : math.inf, 'Steel_Arrows' : 0, 'HollowPoint_Arrows' : 0, 'Tri_Arrows' : 0, 'Frost_Arrows' : 0, 'Fire_Arrows' : 0, 'Poison_Arrows' : 0, 'Tracking_Arrows' : 0}
 
         self.playerScore = 0
 
-        self.spawnPos = [displayWidth * 0.5 , displayHeight * 0.5]  # Initialized to the center of the screen
-        self.currentPlayerPos = [0, 0]
 
 
     def update(self):

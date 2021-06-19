@@ -2,6 +2,7 @@
 from Game_Files.Character_CLASS import *
 
 class Enemy:
+
     def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, enemyScore, xSpawnPos, ySpawnPos):
         self.image = image
 
@@ -53,3 +54,19 @@ class Enemy:
     def setEnemySpeed(self, newSpeed):
         self.currentEnemySpeed = newSpeed
 
+
+
+
+
+### THE FOLLOWING SUBCLASSES WILL BE IMPLEMENTED LATER WHEN UNIQUE ENEMY MOVEMENT/ATTACKS ARE IMPLEMENTED:
+class EnemyONE(Enemy):
+    pass
+
+class EnemyTWO(Enemy):
+    pass
+
+class EnemyTHREE(Enemy):
+    pass
+
+class EnemyFOUR(Enemy):
+    pass

@@ -2,13 +2,13 @@
 from Game_Files.Character_CLASS import *
 from Game_Files.General_Game_Functions import *
 
+
 ARROW_LIST = []
 ENEMY_LIST = []
-Dead = "You died!"
-
 
 
 class Arrow:
+
     def __init__(self, arrowImage, arrowSpeed, arrowDamage):
 
         self.arrowImage = arrowImage
@@ -105,7 +105,9 @@ class Arrow:
             for currArrow in ARROW_LIST:
                 ArrowEnemyCollide = self.collisionDetection(enemy.hitEpicenter, (currArrow[3][0], currArrow[3][1]), enemy.hitBox, currArrow[4])
                 if ArrowEnemyCollide:
-                    enemyHealth = enemy.enemyHealth - self.arrowDamage
+                    enemyHealth = enemy.enemyHealth - self.arrowDamage # ! 'self.arrowDamage' is the only method used... pulling from
+                                                                       #    the defined arrow in 'General_Game_Functions'... still need
+                                                                       #    to implement the new arrow system!
                     ARROW_LIST.pop(arrowIndex)
                     if enemyHealth <= 0:
                         Player1.playerScore += enemy.enemyScore
@@ -117,100 +119,3 @@ class Arrow:
             enemyIndex += 1
 
         return playerDied
-
-
-
-    # def HollowPoint_Hit(self):
-    #     enemyIndex = 0
-    #     for enemy in ENEMY_LIST:
-    #         enemy.enemyControl()
-    #         pos = enemy.Get_enemyPos()
-    #         if pos != Player1.Get_playerPos():
-    #             enemy.enemyMove()
-    #         if enemy.Get_enemyPos()[0] >= Player1.Get_playerPos()[0] and enemy.Get_enemyPos()[0] <= \
-    #                 Player1.Get_playerPos()[0] + player.get_rect().width and \
-    #                 enemy.Get_enemyPos()[1] >= Player1.Get_playerPos()[1] and enemy.Get_enemyPos()[1] <= \
-    #                 Player1.Get_playerPos()[1] + player.get_rect().height:
-    #             playerHealth = playerHealth - enemy.enemyDamage
-    #             if playerHealth <= 0:
-    #                 print(Dead)
-    #                 global Run_Game
-    #                 Run_Game = False
-    #         arrowIndex = 0
-    #         for projectile in ARROW_LIST:
-    #             if projectile[3] >= enemy.Get_enemyPos()[0] and projectile[3] <= enemy.Get_enemyPos()[0] + \
-    #                     enemy.getEnemyDimensions()[0] and \
-    #                     projectile[4] >= enemy.Get_enemyPos()[1] and projectile[4] <= enemy.Get_enemyPos()[1] + \
-    #                     enemy.getEnemyDimensions()[1]:
-    #                 enemyHealth = enemy.getEnemyHealth() - self.arrowDamage
-    #                 # arrows.pop(arrowIndex)
-    #                 if enemyHealth <= 0:
-    #                     ENEMY_LIST.pop(enemyIndex)
-    #                 elif enemyHealth > 0:
-    #                     enemy.setEnemyHealth(enemyHealth)
-    #             arrowIndex += 1
-    #         enemyIndex += 1
-    #
-    # def Tri_Hit(self):
-    #     enemyIndex = 0
-    #     for enemy in ENEMY_LIST:
-    #         enemy.enemyControl()
-    #         pos = enemy.Get_enemyPos()
-    #         if pos != Player1.Get_playerPos():
-    #             enemy.enemyMove()
-    #         if enemy.Get_enemyPos()[0] >= Player1.Get_playerPos()[0] and enemy.Get_enemyPos()[0] <= \
-    #                 Player1.Get_playerPos()[0] + player.get_rect().width and \
-    #                 enemy.Get_enemyPos()[1] >= Player1.Get_playerPos()[1] and enemy.Get_enemyPos()[1] <= \
-    #                 Player1.Get_playerPos()[1] + player.get_rect().height:
-    #             global playerHealth
-    #             playerHealth = playerHealth - enemy.enemyDamage
-    #             if playerHealth <= 0:
-    #                 print(Dead)
-    #                 global Run_Game
-    #                 Run_Game = False
-    #         arrowIndex = 0
-    #         for projectile in ARROW_LIST:
-    #             if projectile[3] >= enemy.Get_enemyPos()[0] and projectile[3] <= enemy.Get_enemyPos()[0] + \
-    #                     enemy.getEnemyDimensions()[0] and \
-    #                     projectile[4] >= enemy.Get_enemyPos()[1] and projectile[4] <= enemy.Get_enemyPos()[1] + \
-    #                     enemy.getEnemyDimensions()[1]:
-    #                 enemyHealth = enemy.getEnemyHealth() - self.arrowDamage
-    #                 ARROW_LIST.pop(arrowIndex)
-    #                 if enemyHealth <= 0:
-    #                     ENEMY_LIST.pop(enemyIndex)
-    #                 elif enemyHealth > 0:
-    #                     enemy.setEnemyHealth(enemyHealth)
-    #             arrowIndex += 1
-    #         enemyIndex += 1
-    #
-    # def Frost_Hit(self):
-    #     enemyIndex = 0
-    #     for enemy in ENEMY_LIST:
-    #         enemy.enemyControl()
-    #         pos = enemy.Get_enemyPos()
-    #         if pos != Player1.Get_playerPos():
-    #             enemy.enemyMove()
-    #         if enemy.Get_enemyPos()[0] >= Player1.Get_playerPos()[0] and enemy.Get_enemyPos()[0] <= \
-    #                 Player1.Get_playerPos()[0] + player.get_rect().width and \
-    #                 enemy.Get_enemyPos()[1] >= Player1.Get_playerPos()[1] and enemy.Get_enemyPos()[1] <= \
-    #                 Player1.Get_playerPos()[1] + player.get_rect().height:
-    #             global playerHealth
-    #             playerHealth = playerHealth - enemy.enemyDamage
-    #             if playerHealth <= 0:
-    #                 print(Dead)
-    #                 global Run_Game
-    #                 Run_Game = False
-    #         arrowIndex = 0
-    #         for projectile in ARROW_LIST:
-    #             if projectile[3] >= enemy.Get_enemyPos()[0] and projectile[3] <= enemy.Get_enemyPos()[0] + \
-    #                     enemy.getEnemyDimensions()[0] and \
-    #                     projectile[4] >= enemy.Get_enemyPos()[1] and projectile[4] <= enemy.Get_enemyPos()[1] + \
-    #                     enemy.getEnemyDimensions()[1]:
-    #                 enemyHealth = enemy.getEnemyHealth() - self.arrowDamage
-    #                 ARROW_LIST.pop(arrowIndex)
-    #                 if enemyHealth <= 0:
-    #                     ENEMY_LIST.pop(enemyIndex)
-    #                 elif enemyHealth > 0:
-    #                     enemy.setEnemyHealth(enemyHealth)
-    #             arrowIndex += 1
-    #         enemyIndex += 1

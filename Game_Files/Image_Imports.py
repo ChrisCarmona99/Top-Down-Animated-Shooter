@@ -40,8 +40,13 @@ ORANGE = (255, 153, 51)
 basePath = os.path.dirname(__file__)
 
 highResBackground = pygame.image.load( os.path.join(basePath, "GameResources/Dirt_Background_1200x800_HighRes.png") ).convert()
+Help_PIC = pygame.image.load( os.path.join(basePath, "GameResources/Help_PIC.png") ).convert()
 
 player = pygame.image.load( os.path.join(basePath, "GameResources/PixelGunman_84x59.png") )
+
+Gold_1 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_1.png"))
+Gold_2 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_2.png"))
+Gold_3 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_3.png"))
 
 Basic_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Basic_Arrow_32x7.png") )
 Steel_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Steel_Arrow_32x7.png") )
@@ -63,6 +68,7 @@ enemy_four = pygame.image.load( os.path.join(basePath, "GameResources/PixelEnemy
 
 
 highResBackground = pygame.transform.scale(highResBackground, (displayWidth, displayHeight)).convert()
+Help_PIC = pygame.transform.scale(Help_PIC, ( round(Help_PIC.get_rect()[2] * (displayHeight/Help_PIC.get_rect()[3]) ), round(Help_PIC.get_rect()[3] * (displayHeight/Help_PIC.get_rect()[3])) ) ).convert()
 
 player = pygame.transform.scale( player, ( round(player.get_rect()[2] * 1.3) ,  round(player.get_rect()[3] * 1.3) ) )
 

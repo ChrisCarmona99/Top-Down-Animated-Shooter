@@ -12,12 +12,13 @@ PAUSE_BACKGROUND = (700, 1000)
 QUIT = (650, 250)
 RESUME = (650, 250)
 
+BACK = (500, 250)
+
 YOU_DIED_BACKGROUND = (900, 300)
 GAMEOVER_BACKGROUND = (700, 1000)
 PLAY_AGAIN = (650, 250)
 EXIT = (650, 250)
 
-# Initialize
 
 
 def MAIN_MENU():
@@ -31,10 +32,13 @@ def MAIN_MENU():
     firstRound = 1
 
     runningMainMenu = True
+    runningHelpMenu = False
     runningGame = False
     runningPauseMenu = False
 
+
     while runningMainMenu:
+
         screen.fill(GOLDENROD)
 
         pygame.draw.rect(screen, DARKGREY, [centerText(PLAY)[0], centerText(PLAY)[1], PLAY[0], PLAY[1]])
@@ -45,6 +49,10 @@ def MAIN_MENU():
         if runningGame or runningPauseMenu:
             GAMEPLAY(selectedArrow, EnemyCount, Countdown, firstRound)
             runningGame = False
+
+        if runningHelpMenu:
+            HELP_MENU()
+            runningHelpMenu = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -59,7 +67,7 @@ def MAIN_MENU():
                     RESET()
                 if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
                         mousePos[1] <= centerText(HELP)[1] + HELP[1] + 300):
-                    print("Help Menu")
+                    runningHelpMenu = True
 
         pygame.display.update()
         clock.tick(120)
@@ -67,11 +75,10 @@ def MAIN_MENU():
 
 
 def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
+
     runningGame = True
     runningPauseMenu = False
     restartGame = False
-
-
 
     move = [False, False, False, False]
     Shooting = False
@@ -101,9 +108,7 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
             runningGame = x[0]
             runningPauseMenu = x[1]
 
-
-        Player1.playerSetup()
-
+        Player1.playerSetup() # DRAWS PLAYER
 
         # Enemy Spawn Logic:
         if enemySpawnTimer <= 0:
@@ -126,12 +131,10 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
                 ROUND_COUNTER += 1
                 beginRound = True
 
-
         arrowControl()  # Runs Arrow CONTROL
         playerDied = arrowSelection()  # Runs Arrow HITS, returns true or false if player health == 0
 
-
-        pygame.draw.rect(screen, DARKGREY, [0, 0, displayWidth, 80]) # Draws grey box at top of screen
+        pygame.draw.rect(screen, DARKGREY, [0, 0, displayWidth, 80]) # Draws grey rectangle at top of screen
 
         playerScoreText = "Score: " + str(Player1.playerScore)
         FONT = pygame.font.SysFont("Times New Roman, Ariel", 50)
@@ -155,8 +158,6 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
             ROUND_COUNTER = 1
             beginRound = True
             restartGame = False
-
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -190,7 +191,6 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
                 if event.key == K_ESCAPE:
                     runningPauseMenu = True
 
-
                 # TEST KEYS:
                 if event.key == K_e:
                     Player1.getHealth(25)
@@ -203,7 +203,6 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
                 if event.key == K_x:
                     SpawnLocation = generateEnemySpawnCoordinates()
                     ENEMY_LIST.append(generateEnemy(SpawnLocation))
-
 
             if event.type == pygame.KEYUP:
                 if event.key == K_w:
@@ -219,7 +218,6 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
                 Shooting = True
             if event.type == MOUSEBUTTONUP:
                 Shooting = False
-
 
         if move[0]:
             Player1.spawnPos[1] += -Player1.playerSpeed
@@ -239,7 +237,6 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
         if Player1.spawnPos[1] >= displayHeight:
             move[1] = False
 
-
         if Shooting:
             if ShootTimer == 0:
                 SHOOT(Selected_Arrow)
@@ -247,6 +244,37 @@ def GAMEPLAY(Selected_Arrow, EnemyCount, CountDownSet, currentRound):
         if ShootTimer != 0: # This if statement ensures the player can never fire off arrows faster than the defined 'ShootTimer"
             ShootTimer -= 1
 
+        pygame.display.update()
+        clock.tick(120)
+
+
+
+def HELP_MENU():
+
+    FONT = pygame.font.SysFont("Times New Roman, Arial", 100)
+    Back_TEXT = FONT.render("Back", True, RED)
+
+    runningHelpMenu = True
+
+    while runningHelpMenu:
+        screen.fill(GOLDENROD)
+        screen.blit(Help_PIC, (displayWidth * 0.5 - (Help_PIC.get_rect().width / 2), 0))
+
+        x = (((displayWidth * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (BACK[0] / 2))
+        y = (((displayWidth * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (BACK[0] / 2))
+
+        pygame.draw.rect(screen, DARKGREY, [ x, y, BACK[0], BACK[1] ] )
+        screen.blit( Back_TEXT, (x + BACK[0]/2 - Back_TEXT.get_rect().width/2, y + BACK[1]/2 - Back_TEXT.get_rect().height/2) )
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == MOUSEBUTTONDOWN:
+                mousePos = pygame.mouse.get_pos()
+                if x <= mousePos[0] <= x + BACK[0] and y <= mousePos[1] <= y + BACK[1]:
+                    runningHelpMenu = False
 
         pygame.display.update()
         clock.tick(120)
@@ -261,7 +289,6 @@ def PAUSE_MENU():
 
     runningGame = True
     runningPauseMenu = True
-
 
     while runningPauseMenu:
         pygame.draw.rect(screen, LIGHTGREY, [centerText(PAUSE_BACKGROUND)[0], centerText(PAUSE_BACKGROUND)[1], PAUSE_BACKGROUND[0], PAUSE_BACKGROUND[1]])
@@ -285,14 +312,11 @@ def PAUSE_MENU():
                         mousePos[1] <= centerText(QUIT)[1] + QUIT[1] + 300):
                     runningPauseMenu = False
                     runningGame = False
-                    # RESET_GAME()
 
         pygame.display.update()
         clock.tick(120)
 
     return runningGame, runningPauseMenu
-
-
 
 
 
@@ -367,3 +391,53 @@ def GAMEOVER_MENU():
 
 # Runs The game:
 MAIN_MENU()
+
+
+
+### IGNORE THIS CODE, just testing out some inheritence:
+# class ParentTest:
+#     def __init__(self, name, position):
+#         self.name = name
+#         self.position = position
+#
+#     def testPrint(self):
+#         print("This is the PARENT class print function")
+#
+# class ChildTest1:
+#     def __init__(self, value, newName):
+#         self.value = value
+#         self.newName = newName
+#
+#     def testPrint(self):
+#         print("This is CHILD class #1 print function")
+#
+# class ChildTest2:
+#     def __init__(self, value, newName):
+#         self.value = value
+#         self.newName = newName
+#
+#     def testPrint(self):
+#         print("This is CHILD class #2 print function")
+#
+# test1 = ChildTest1(10, "Chris")
+# test2 = ChildTest2(7, "Hello")
+# test3 = ParentTest(15, "BIG")
+# test4 = ChildTest1(2, ";sfdsfd")
+# test5 = ChildTest1(10, "Chris")
+# test6 = ChildTest2(7, "Hello")
+# test7 = ParentTest(15, "BIG")
+# test8 = ChildTest1(2, ";sfdsfd")
+#
+# testlist = []
+# testlist.append(test1)
+# testlist.append(test2)
+# testlist.append(test3)
+# testlist.append(test4)
+# testlist.append(test5)
+# testlist.append(test6)
+# testlist.append(test7)
+# testlist.append(test8)
+#
+#
+# for item in testlist:
+#     item.testPrint()

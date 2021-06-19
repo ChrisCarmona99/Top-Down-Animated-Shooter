@@ -76,16 +76,16 @@ def generateEnemySpawnCoordinates():
 def generateEnemy(SpawnLocation):
     EnemySelect = randint(1, 4)
     if EnemySelect == 1:
-        SelectedEnemy = Enemy(enemy_one, 6, 10, 13, 10, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = EnemyONE(enemy_one, 6, 10, 13, 10, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 2:
-        SelectedEnemy = Enemy(enemy_two, 4, 25, 21, 15, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = EnemyTWO(enemy_two, 4, 25, 21, 15, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 3:
-        SelectedEnemy = Enemy(enemy_three, 9, 45, 8, 20, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = EnemyTHREE(enemy_three, 7.5, 45, 8, 20, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 4:
-        SelectedEnemy = Enemy(enemy_four, 3, 65, 32, 30, SpawnLocation[0], SpawnLocation[1])
+        SelectedEnemy = EnemyFOUR(enemy_four, 3, 65, 32, 30, SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
 
 
