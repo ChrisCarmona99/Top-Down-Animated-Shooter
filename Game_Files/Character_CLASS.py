@@ -16,6 +16,8 @@ class Character:
 
         self.spawnPos = [displayWidth * 0.5, displayHeight * 0.5]  # Initialized to the center of the screen
         self.currentPlayerPos = [0, 0]
+        self.playerAngle = 0
+        self.playerRotation = None
 
         self.currentHealth = playerHealth
         self.targetHealth = playerHealth
@@ -24,7 +26,7 @@ class Character:
         self.healthRatio = self.maximumHealth / self.healthBarLength
         self.healthChangeSpeed = 2.5
 
-        self.INVENTORY = {'Gold' : 0, 'Basic_Arrows' : math.inf, 'Steel_Arrows' : 0, 'HollowPoint_Arrows' : 0, 'Tri_Arrows' : 0, 'Frost_Arrows' : 0, 'Fire_Arrows' : 0, 'Poison_Arrows' : 0, 'Tracking_Arrows' : 0}
+        self.INVENTORY = {'Gold' : 0, 'Iron_Arrows' : math.inf, 'Steel_Arrows' : 1000, 'Hollowpoint_Arrows' : 5, 'Tri_Arrows' : 3, 'Frost_Arrows' : 2, 'Fire_Arrows' : 0, 'Poison_Arrows' : 0, 'Tracking_Arrows' : 0}
 
         self.playerScore = 0
 
@@ -67,18 +69,18 @@ class Character:
 
 
 
-    def playerSetup(self):
+    def drawPlayer(self):
         radConvert = (360 / (2 * math.pi))
         mousePos = pygame.mouse.get_pos()
-        playerAngle = math.atan2(mousePos[1] - self.spawnPos[1], mousePos[0] - self.spawnPos[0])
-        playerRotation = pygame.transform.rotate(player, 360 - playerAngle * radConvert)
+        self.playerAngle = math.atan2(mousePos[1] - self.spawnPos[1], mousePos[0] - self.spawnPos[0])
+        self.playerRotation = pygame.transform.rotate(player, 360 - self.playerAngle * radConvert)
         self.hitEpicenter = [ round(self.spawnPos[0]), round(self.spawnPos[1]) ]
-        self.currentPlayerPos = [self.spawnPos[0] - playerRotation.get_rect().width / 2,
-                                 self.spawnPos[1] - playerRotation.get_rect().height / 2]
-        screen.blit(playerRotation, self.currentPlayerPos)
+        self.currentPlayerPos = [self.spawnPos[0] - self.playerRotation.get_rect().width / 2,
+                                 self.spawnPos[1] - self.playerRotation.get_rect().height / 2]
+        screen.blit(self.playerRotation, self.currentPlayerPos)
 
         # pygame.draw.circle(screen, GREEN, self.hitEpicenter, self.hitBox ) # DRAW HITBOX
 
 
 
-Player1 = Character(player, 7.5, 200, "")
+Player1 = Character(player, 7.8, 200, "")

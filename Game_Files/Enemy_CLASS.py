@@ -1,9 +1,11 @@
 
 from Game_Files.Character_CLASS import *
 
+
+
 class Enemy:
 
-    def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, enemyScore, xSpawnPos, ySpawnPos):
+    def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, enemyScore, potentialItemDrops, dropRates, xSpawnPos, ySpawnPos):
         self.image = image
 
         self.enemyHealth = enemyHealth
@@ -11,6 +13,8 @@ class Enemy:
         self.currentEnemySpeed = enemySpeed
 
         self.enemyScore = enemyScore
+        self.potentialItemDrops = potentialItemDrops
+        self.dropRates = dropRates
 
         # Used to manipulate Enemy damage + pause after a successful hit against the player:
         self.activeDamage = enemyDamage
@@ -27,7 +31,8 @@ class Enemy:
         self.ySpawnPos = ySpawnPos
         self.currentEnemyPos = [0, 0]
 
-    def enemyControl(self):
+    def drawEnemy(self):
+
         radConvert = (360 / (2 * math.pi))
         enemyAngle = math.atan2(Player1.spawnPos[1] - self.ySpawnPos, Player1.spawnPos[0] - self.xSpawnPos)
         enemyRotation = pygame.transform.rotate(self.image, 360 - enemyAngle * radConvert)
@@ -40,6 +45,7 @@ class Enemy:
 
 
     def enemyMove(self):
+
         enemyAngle = math.atan2(Player1.spawnPos[1] - self.ySpawnPos, Player1.spawnPos[0] - self.xSpawnPos)
         xMove = math.cos(enemyAngle) * self.currentEnemySpeed
         yMove = math.sin(enemyAngle) * self.currentEnemySpeed
@@ -53,8 +59,6 @@ class Enemy:
 
     def setEnemySpeed(self, newSpeed):
         self.currentEnemySpeed = newSpeed
-
-
 
 
 
