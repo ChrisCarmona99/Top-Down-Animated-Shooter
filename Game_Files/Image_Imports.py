@@ -33,12 +33,15 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GOLDENROD = (255, 205, 0)
 DARKORANGE = (176, 129, 0)
+REALLYDARKORANGE = (103, 56, 0)
 RED = (255, 51, 51)
+DARKRED = (102, 0, 0)
 GREEN = (102, 255, 102)
 YELLOW = (255, 255, 0)
 BLUE = (0, 0, 255)
 PURPLE = (127, 0, 255)
 ORANGE = (255, 153, 51)
+BROWN = (139, 69, 19) # "saddlebrown"
 
 
 # Loads all the game images:
@@ -90,7 +93,97 @@ Hollowpoint_Arrow = pygame.transform.scale(Hollowpoint_Arrow, (round(Hollowpoint
 Tri_Arrow = pygame.transform.scale( Tri_Arrow, ( round(Tri_Arrow.get_rect()[2] * 3) , round(Tri_Arrow.get_rect()[3] * 3) ) ).convert_alpha()
 Frost_Arrow = pygame.transform.scale( Frost_Arrow, ( round(Frost_Arrow.get_rect()[2] * 3) , round(Frost_Arrow.get_rect()[3] * 3) ) ).convert_alpha()
 
+Iron_Arrow_ARMORY = pygame.transform.scale(Iron_Arrow, (round(Iron_Arrow.get_rect()[2] * (4/3) ) , round(Iron_Arrow.get_rect()[3] * (4/3) ) ) ).convert_alpha()
+Steel_Arrow_ARMORY = pygame.transform.scale( Steel_Arrow, ( round(Steel_Arrow.get_rect()[2] * (4/3) ) , round(Steel_Arrow.get_rect()[3] * (4/3) ) ) ).convert_alpha()
+Hollowpoint_Arrow_ARMORY = pygame.transform.scale(Hollowpoint_Arrow, (round(Hollowpoint_Arrow.get_rect()[2] * (4/3) ) , round(Hollowpoint_Arrow.get_rect()[3] * (4/3) ) ) ).convert_alpha()
+Tri_Arrow_ARMORY = pygame.transform.scale( Tri_Arrow, ( round(Tri_Arrow.get_rect()[2] * (4/3) ) , round(Tri_Arrow.get_rect()[3] * (4/3) ) ) ).convert_alpha()
+Frost_Arrow_ARMORY = pygame.transform.scale( Frost_Arrow, ( round(Frost_Arrow.get_rect()[2] * (4/3) ) , round(Frost_Arrow.get_rect()[3] * (4/3) ) ) ).convert_alpha()
+
+arrowDict = {"Iron_Arrows" : Iron_Arrow_ARMORY, "Steel_Arrows" : Steel_Arrow_ARMORY, "Hollowpoint_Arrows" : Hollowpoint_Arrow_ARMORY, "Tri_Arrows" : Tri_Arrow_ARMORY, "Frost_Arrows" : Frost_Arrow_ARMORY}
+
 enemy_one = pygame.transform.scale( enemy_one, ( round(enemy_one.get_rect()[2] * 1.5) , round(enemy_one.get_rect()[3] * 1.5) ) ).convert_alpha()
 enemy_two = pygame.transform.scale( enemy_two, ( round(enemy_two.get_rect()[2] * 1.5) , round(enemy_two.get_rect()[3] * 1.5) ) ).convert_alpha()
 enemy_three = pygame.transform.scale( enemy_three, ( round(enemy_three.get_rect()[2] * 1.5) , round(enemy_three.get_rect()[3] * 1.5) ) ).convert_alpha()
 enemy_four = pygame.transform.scale( enemy_four, ( round(enemy_four.get_rect()[2] * 1.5) , round(enemy_four.get_rect()[3] * 1.5) ) ).convert_alpha()
+
+
+
+# INITIALIZE BUTTON DIMENSIONS:
+PLAY = (700, 250)
+HELP = (700, 250)
+EXIT_GAME = (700, 250)
+
+HELP_MENU_BACK = (500, 250)
+
+CONTINUE = (500, 150)
+
+ARROW_BUTTON = (300, 200)
+BUY_BUTTON = ( 150, 100 )
+EQUIP_BUTTON = ( 150, 100 )
+SELL_BUTTON = ( 150, 100 )
+
+HOTBAR = (  )
+ARMORY_ITEM_SLOT = (200, 200)
+GAMEPLAY_ITEM_SLOT = ( 120, 120 )
+
+PAUSE_BACKGROUND = (700, 1000)
+RESUME = (650, 250)
+QUIT = (650, 250)
+
+YOU_DIED_BACKGROUND = (900, 300)
+GAMEOVER_BACKGROUND = (700, 1000)
+PLAY_AGAIN = (650, 250)
+EXIT = (650, 250)
+
+
+
+### ARMORY CONSTANTS:
+
+# INITIALIZE FONTS:
+BUTTON_FONT = pygame.font.SysFont( "Times New Roman, Ariel", 100 )
+PRICE_FONT = pygame.font.SysFont( "Times New Roman, Ariel", 50 )
+
+
+# INITIALIZE BUTTON TEXTS:
+Continue_TEXT = BUTTON_FONT.render( "Continue", True, RED )
+
+SteelName_TEXT = PRICE_FONT.render( "Steel", True, DARKRED )
+HollowpointName_TEXT = PRICE_FONT.render( "Hollowpoint", True, DARKRED )
+FrostName_TEXT = PRICE_FONT.render( "Frost", True, DARKRED )
+TriName_TEXT = PRICE_FONT.render( "Tri", True, DARKRED )
+
+BuyQuantity_TEXT = PRICE_FONT.render( "x50", True, DARKRED )
+
+SteelPrice_TEXT = PRICE_FONT.render( "$25", True, DARKRED )
+HollowpointPrice_TEXT = PRICE_FONT.render( "$30", True, DARKRED )
+FrostPrice_TEXT = PRICE_FONT.render( "$35", True, DARKRED )
+TriPrice_TEXT = PRICE_FONT.render( "$35", True, DARKRED )
+
+Buy_TEXT = PRICE_FONT.render( "Buy", True, WHITE )
+Equip_TEXT = PRICE_FONT.render( "Equip", True, WHITE )
+Sell_TEXT = PRICE_FONT.render( "Sell", True, WHITE )
+
+
+# INITIALIZE BUTTON COORDINATES:
+
+CONTINUE_COOR = ( displayWidth - CONTINUE[0] - 50, displayHeight - CONTINUE[1] - 50 )
+Continue_TEXT_COOR = ( displayWidth - CONTINUE[0] / 2 - Continue_TEXT.get_rect().width / 2 - 50, displayHeight - CONTINUE[1] / 2 - Continue_TEXT.get_rect().height / 2 - 50 )
+ARROW_BUTTON_COOR = ( 200, 800 ) # Sets the top left button... all other buttons are oriented to this button for rearrangement simplicity
+BUY_BUTTON_COOR = ( 400, 1600 )
+SELL_BUTTON_COOR = (650, 1600)
+EQUIP_BUTTON_COOR = ( 900, 1600 )
+
+HOTBAR_COOR = ( 500, 200 )
+ITEM_SLOT1_COOR = (HOTBAR_COOR[0], HOTBAR_COOR[1])
+ITEM_SLOT2_COOR = (HOTBAR_COOR[0] + ARMORY_ITEM_SLOT[0], HOTBAR_COOR[1])
+ITEM_SLOT3_COOR = (HOTBAR_COOR[0] + ARMORY_ITEM_SLOT[0] * 2, HOTBAR_COOR[1])
+ITEM_SLOT4_COOR = (HOTBAR_COOR[0] + ARMORY_ITEM_SLOT[0] * 3, HOTBAR_COOR[1])
+
+    # Gameplay HotBar coordinates:
+HOTBAR_GAMEPLAY_COOR = (displayWidth / 2 - GAMEPLAY_ITEM_SLOT[0] * 2, displayHeight - 150)
+ITEM_SLOT1_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0], HOTBAR_GAMEPLAY_COOR[1])
+ITEM_SLOT2_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0] + GAMEPLAY_ITEM_SLOT[0], HOTBAR_GAMEPLAY_COOR[1])
+ITEM_SLOT3_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0] + GAMEPLAY_ITEM_SLOT[0] * 2, HOTBAR_GAMEPLAY_COOR[1])
+ITEM_SLOT4_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0] + GAMEPLAY_ITEM_SLOT[0] * 3, HOTBAR_GAMEPLAY_COOR[1])
+
+

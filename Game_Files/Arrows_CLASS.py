@@ -7,14 +7,15 @@ ENEMY_LIST = []
 ITEM_LIST = []
 
 
-
 class Arrow:
 
-    def __init__(self, arrowImage, arrowSpeed, arrowDamage, arrowTrajectory):
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
 
+        self.arrowName = arrowName
         self.arrowImage = arrowImage
         self.arrowSpeed = arrowSpeed
         self.arrowDamage = arrowDamage
+        self.arrowPrice = arrowPrice
 
         self.hitBox = 10
         self.hitEpicenter = [0, 0]
@@ -30,6 +31,9 @@ class Arrow:
         self.arrowImage = image
         self.arrowSpeed = speed
         self.arrowDamage = damage
+
+    def getName(self):
+        return self.arrowName
 
 
     def Basic_DrawArrow(self):
@@ -60,20 +64,21 @@ class Arrow:
 
 
 class IronArrow(Arrow):
-    pass
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
+        super().__init__(arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory)
 
 class SteelArrow(Arrow):
-    pass
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
+        super().__init__(arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory)
 
 class HollowpointArrow(Arrow):
-    pass
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
+        super().__init__(arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory)
 
 class TriArrow(Arrow):
-    pass
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
+        super().__init__(arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory)
 
 class FrostArrow(Arrow):
-    pass
-
-
-
-
+    def __init__(self, arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory):
+        super().__init__(arrowName, arrowImage, arrowSpeed, arrowDamage, arrowPrice, arrowTrajectory)

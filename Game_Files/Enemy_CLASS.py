@@ -1,8 +1,6 @@
 
 from Game_Files.Character_CLASS import *
 
-
-
 class Enemy:
 
     def __init__(self, image, enemySpeed, enemyDamage, enemyHealth, enemyScore, potentialItemDrops, dropRates, xSpawnPos, ySpawnPos):

@@ -1,8 +1,6 @@
 
 from Game_Files.Image_Imports import *
 
-playerInitialPos = [displayWidth * 0.5, displayHeight * 0.5]
-
 class Character:
 
     def __init__(self, image, playerSpeed, playerHealth, WeaponType):
@@ -26,14 +24,12 @@ class Character:
         self.healthRatio = self.maximumHealth / self.healthBarLength
         self.healthChangeSpeed = 2.5
 
-        self.INVENTORY = {'Gold' : 0, 'Iron_Arrows' : math.inf, 'Steel_Arrows' : 1000, 'Hollowpoint_Arrows' : 5, 'Tri_Arrows' : 3, 'Frost_Arrows' : 2, 'Fire_Arrows' : 0, 'Poison_Arrows' : 0, 'Tracking_Arrows' : 0}
+        self.INVENTORY = {'Gold' : 0, 'Iron_Arrows' : math.inf, 'Steel_Arrows' : 10, 'Hollowpoint_Arrows' : 5, 'Tri_Arrows' : 3, 'Frost_Arrows' : 2, 'Fire_Arrows' : 0, 'Poison_Arrows' : 0, 'Tracking_Arrows' : 0}
 
         self.playerScore = 0
 
 
 
-    def update(self):
-        self.animatedHealthBar()
 
     def getDamage(self, damageAmount):
         if self.targetHealth > 0:
@@ -47,18 +43,30 @@ class Character:
         if self.targetHealth >= self.maximumHealth:
             self.targetHealth = self.maximumHealth
 
-    def animatedHealthBar(self):
+    def updateHealthBar(self):
         transitionWidth = 0
         transitionColor = RED
 
-        if self.currentHealth < self.targetHealth:
-            self.currentHealth += self.healthChangeSpeed
-            transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
-            transitionColor = GREEN
+        # if self.currentHealth < self.targetHealth:
+        #     self.currentHealth += self.healthChangeSpeed
+        #     transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
+        #     transitionColor = GREEN
+        # if self.currentHealth > self.targetHealth:
+        #     self.currentHealth -= self.healthChangeSpeed
+        #     transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
+        #     transitionColor = YELLOW
+
+
         if self.currentHealth > self.targetHealth:
             self.currentHealth -= self.healthChangeSpeed
             transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
             transitionColor = YELLOW
+        if self.currentHealth < self.targetHealth:
+            self.currentHealth += self.healthChangeSpeed
+            transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
+            transitionColor = GREEN
+
+
 
         healthBarRECT = pygame.Rect( 15, 15, self.currentHealth / self.healthRatio, 50 )
         transitionBarRECT = pygame.Rect( healthBarRECT.right, 15, transitionWidth, 50 )

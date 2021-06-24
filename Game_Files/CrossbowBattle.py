@@ -6,26 +6,23 @@ import random
 
 from Game_Files.General_Game_Functions import *
 from Game_Files.Arrows_CLASS import *
+from Game_Files.HotBar_CLASS import *
 
 
 # Initialize Button Dimensions:
-PLAY = (700, 250)
-HELP = (700, 250)
-EXIT_GAME = (700, 250)
 
-HELP_MENU_BACK = (500, 250)
 
-CONTINUE = (500, 150)
-BUY = (150, 100)
 
-PAUSE_BACKGROUND = (700, 1000)
-RESUME = (650, 250)
-QUIT = (650, 250)
 
-YOU_DIED_BACKGROUND = (900, 300)
-GAMEOVER_BACKGROUND = (700, 1000)
-PLAY_AGAIN = (650, 250)
-EXIT = (650, 250)
+HotBar = DoublyLinkedList()
+InitialSelect = IronArrow( "Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle )
+# Initialize Item Slots with the first slot containing Iron Arrows:
+HotBar.append( InitialSelect, 1 )
+HotBar.append( None, 2 )
+HotBar.append( None, 3 )
+HotBar.append( None, 4 )
+
+selectedArrows = [InitialSelect, None, None, None]
 
 
 
@@ -39,6 +36,14 @@ def MAIN_MENU():
     EnemyCount = 0
     Countdown = 1
     firstRound = 1
+
+    playBorder = False
+    helpBorder = False
+    exitBorder = False
+
+    playClickBorder = False
+    helpClickBorder = False
+    exitClickBorder = False
 
     runningMainMenu = True
     runningHelpMenu = False
@@ -58,6 +63,21 @@ def MAIN_MENU():
         screen.blit( Help_TEXT, ( displayWidth / 2 - Help_TEXT.get_rect().width / 2, displayHeight / 2 - Help_TEXT.get_rect().height / 2 + 300) )
         screen.blit( Exit_TEXT, ( displayWidth / 2 - Exit_TEXT.get_rect().width / 2, displayHeight / 2 - Exit_TEXT.get_rect().height / 2 + 600))
 
+        if playBorder:
+            pygame.draw.rect(screen, WHITE, [centerText(PLAY)[0], centerText(PLAY)[1], PLAY[0], PLAY[1]], 4)
+        if helpBorder:
+            pygame.draw.rect(screen, WHITE, [centerText(HELP)[0], centerText(HELP)[1] + 300, HELP[0], HELP[1]], 4)
+        if exitBorder:
+            pygame.draw.rect(screen, WHITE, [centerText(EXIT_GAME)[0], centerText(EXIT_GAME)[1] + 600, EXIT_GAME[0], EXIT_GAME[1]], 4)
+
+        if playClickBorder:
+            pygame.draw.rect(screen, RED, [centerText(PLAY)[0], centerText(PLAY)[1], PLAY[0], PLAY[1]], 8)
+        if helpClickBorder:
+            pygame.draw.rect(screen, RED, [centerText(HELP)[0], centerText(HELP)[1] + 300, HELP[0], HELP[1]], 8)
+        if exitClickBorder:
+            pygame.draw.rect(screen, RED, [centerText(EXIT_GAME)[0], centerText(EXIT_GAME)[1] + 600, EXIT_GAME[0], EXIT_GAME[1]], 8)
+
+
         if runningGame or runningPauseMenu:
             GAMEPLAY(EnemyCount, Countdown, firstRound)
             runningGame = False
@@ -66,20 +86,63 @@ def MAIN_MENU():
             HELP_MENU()
             runningHelpMenu = False
 
+
         for event in pygame.event.get():
+            mousePos = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+            if (centerText(PLAY)[0] <= mousePos[0] <= centerText(PLAY)[0] + PLAY[0] and centerText(PLAY)[1] <=
+                    mousePos[1] <= centerText(PLAY)[1] + PLAY[1]):
+                playBorder = True
+            else:
+                playBorder = False
+
+            if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
+                    mousePos[1] <= centerText(HELP)[1] + HELP[1] + 300):
+                helpBorder = True
+            else:
+                helpBorder = False
+
+            if (centerText(EXIT_GAME)[0] <= mousePos[0] <= centerText(EXIT_GAME)[0] + EXIT_GAME[0] and
+                    centerText(EXIT_GAME)[1] + 600 <=
+                    mousePos[1] <= centerText(EXIT_GAME)[1] + EXIT_GAME[1] + 600):
+                exitBorder = True
+            else:
+                exitBorder = False
+
+
             if event.type == MOUSEBUTTONDOWN:
+
+                if (centerText(PLAY)[0] <= mousePos[0] <= centerText(PLAY)[0] + PLAY[0] and centerText(PLAY)[1] <=
+                        mousePos[1] <= centerText(PLAY)[1] + PLAY[1]):
+                    playClickBorder = True
+
+                if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
+                        mousePos[1] <= centerText(HELP)[1] + HELP[1] + 300):
+                    helpClickBorder = True
+
+                if (centerText(EXIT_GAME)[0] <= mousePos[0] <= centerText(EXIT_GAME)[0] + EXIT_GAME[0] and centerText(EXIT_GAME)[1] + 600 <=
+                        mousePos[1] <= centerText(EXIT_GAME)[1] + EXIT_GAME[1] + 600):
+                    exitClickBorder = True
+
+            if event.type == MOUSEBUTTONUP:
+                playClickBorder = False
+                helpClickBorder = False
+                exitClickBorder = False
                 mousePos = pygame.mouse.get_pos()
+
                 if (centerText(PLAY)[0] <= mousePos[0] <= centerText(PLAY)[0] + PLAY[0] and centerText(PLAY)[1] <=
                         mousePos[1] <= centerText(PLAY)[1] + PLAY[1]):
                     runningGame = True
                     RESET()
+
                 if (centerText(HELP)[0] <= mousePos[0] <= centerText(HELP)[0] + HELP[0] and centerText(HELP)[1] + 300 <=
                         mousePos[1] <= centerText(HELP)[1] + HELP[1] + 300):
                     runningHelpMenu = True
+
                 if (centerText(EXIT_GAME)[0] <= mousePos[0] <= centerText(EXIT_GAME)[0] + EXIT_GAME[0] and centerText(EXIT_GAME)[1] + 600 <=
                         mousePos[1] <= centerText(EXIT_GAME)[1] + EXIT_GAME[1] + 600):
                     pygame.quit()
@@ -94,7 +157,7 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
     runningGame = True
     runningPauseMenu = False
     restartGame = False
-    runningIntermissionMenu = False
+    runningArmoryMenu = False
 
     move = [False, False, False, False]
     Shooting = False
@@ -106,14 +169,18 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
 
     enemySpawnTimer = 10
     Countdown = CountDownSet
-    MaximumEnemies = 30
+    MaximumEnemies = 1
 
-    selectedArrow = "Iron_Arrows" # Initialize starting arrow to the basic arrow
+
+    currentlySelectedItemSlot = HotBar.head # Initialized at ItemSlot 1
+    selectedHotBarArrows = selectedArrows
 
     while runningGame:
 
         screen.fill(0)
         screen.blit(highResBackground, (0, 0))
+
+        selectedArrow = currentlySelectedItemSlot.CURRENT_ARROW
 
         if beginRound:
             DISPLAY_WAVE(ROUND_COUNTER)
@@ -121,10 +188,12 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
             move = [False, False, False, False]
             beginRound = False
 
-        if runningIntermissionMenu:
-            x = INTERMISSION_MENU()
+        if runningArmoryMenu:
+            x = ARMORY_MENU(selectedHotBarArrows)
             runningGame = x[0]
-            runningIntermissionMenu = x[1]
+            runningArmoryMenu = x[1]
+            selectedHotBarArrows = x[2]
+
             beginRound = True
 
         if runningPauseMenu:
@@ -140,11 +209,12 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
                 roundBufferTimer = 75
                 EnemyCount = 0
                 ROUND_COUNTER += 1
-                runningIntermissionMenu = True
+                runningArmoryMenu = True
 
 
-        # PLAYER, ENEMY & ARROW CONTROL:w
+        # PLAYER, HOTBAR, ENEMY & ARROW CONTROL:w
         Player1.drawPlayer() # Draws Player
+        DRAW_GAMEPLAY_HOTBAR(selectedHotBarArrows, currentlySelectedItemSlot)
         for currentArrow in ARROW_LIST:
             currentArrow.Basic_DrawArrow()
             currentArrow.Basic_MoveArrow()
@@ -161,15 +231,14 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
         playerDied = COLLISION_CONTROL()
         ITEM_COLLISION_CONTROL()
 
-        # HUD & ITEM BAR CONTROL
+        # HUD CONTROL:
         pygame.draw.rect(screen, DARKGREY, [0, 0, displayWidth, 80]) # Draws grey rectangle at top of screen
-        Player1.update()  # Updates player's health bar
+        Player1.updateHealthBar()  # Updates player's health bar
         FONT = pygame.font.SysFont("Times New Roman, Ariel", 50)
         PlayerScore_TEXT = FONT.render("Score: " + str(Player1.playerScore), True, WHITE)
         PlayerGold_TEXT = FONT.render("Gold: " + str(Player1.INVENTORY.get('Gold')), True, WHITE)
         screen.blit( PlayerScore_TEXT, ( displayWidth - 250, 15 ) )
         screen.blit( PlayerGold_TEXT, ( displayWidth - 750, 15 ) )
-
 
 
         # Player Death Logic:
@@ -203,40 +272,24 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
                 elif event.key == K_d:
                     move[3] = True
 
-                if event.key == K_1:
-                    if Player1.INVENTORY.get("Iron_Arrows") > 0:
-                        selectedArrow = "Iron_Arrows"
-                    else:
-                        print("You don't have any Iron Arrows!")
-                if event.key == K_2:
-                    if Player1.INVENTORY.get("Steel_Arrows") > 0:
-                        selectedArrow = "Steel_Arrows"
-                    else:
-                        print("You don't have any Steel Arrows!")
-                if event.key == K_3:
-                    if Player1.INVENTORY.get("Hollowpoint_Arrows") > 0:
-                        selectedArrow = "Hollowpoint_Arrows"
-                    else:
-                        print("You don't have any Hollowpoint Arrows!")
-                if event.key == K_4:
-                    if Player1.INVENTORY.get("Tri_Arrows") > 0:
-                        selectedArrow = "Tri_Arrows"
-                    else:
-                        print("You don't have any Tri Arrows!")
-                if event.key == K_5:
-                    if Player1.INVENTORY.get("Frost_Arrows") > 0:
-                        selectedArrow = "Frost_Arrows"
-                    else:
-                        print("You don't have any Frost Arrows!")
+                if event.key == K_e:
+                    if currentlySelectedItemSlot.RIGHT is not None:
+                        currentlySelectedItemSlot = currentlySelectedItemSlot.RIGHT
+                if event.key == K_q:
+                    if currentlySelectedItemSlot.LEFT is not None:
+                        currentlySelectedItemSlot = currentlySelectedItemSlot.LEFT
+                if event.key == K_l:
+                    print(str( currentlySelectedItemSlot.slotNum ))
+
 
                 if event.key == K_ESCAPE:
                     runningPauseMenu = True
 
 
                 # TEST KEYS:
-                if event.key == K_e:
+                if event.key == K_c:
                     Player1.getHealth(25)
-                if event.key == K_q:
+                if event.key == K_v:
                     Player1.getDamage(30)
                 if event.key == K_r:
                     ARROW_LIST.clear()
@@ -291,66 +344,185 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
         clock.tick(60)
 
 
-def INTERMISSION_MENU():
-
-    FONT = pygame.font.SysFont( "Times New Roman, Ariel", 100 )
-    Continue_TEXT = FONT.render( "Continue", True, RED )
+def ARMORY_MENU(selectedHotBar):
 
     runningGame = True
-    runningIntermissionMenu = True
+    runningArmoryMenu = True
+    selectedHotBarArrows = selectedHotBar
 
-    while runningIntermissionMenu:
+    HIGHLIGHT = 8
+    arrowOneBorder = False
+    arrowTwoBorder = False
+    arrowThreeBorder = False
+    arrowFourBorder = False
+
+    arrowOneClickedBorder = False
+    arrowTwoClickedBorder = False
+    arrowThreeClickedBorder = False
+    arrowFourClickedBorder = False
+
+    SELECTED = None
+
+    while runningArmoryMenu:
         screen.fill(DARKORANGE)
 
-        CONTINUE_COOR = ( displayWidth - CONTINUE[0] - 50, displayHeight - CONTINUE[1] - 50 )
-        Continue_TEXT_COOR = ( displayWidth - CONTINUE[0] / 2 - Continue_TEXT.get_rect().width / 2 - 50, displayHeight - CONTINUE[1] / 2 - Continue_TEXT.get_rect().height / 2 - 50 )
-        BUY_COOR = ( 250, 500 )
+        # HotBar:
+        DRAW_ARMORY_HOTBAR(selectedHotBarArrows) # Draw Arrows in HotBar
 
+        # Arrow Buttons:
+        DRAW_ARROW_BUTTONS()
+
+        # 'Buy' Button:
+        pygame.draw.rect( screen, BROWN, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]] )
+        pygame.draw.rect( screen, DARKGREY, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 4 )
+        screen.blit( Buy_TEXT, ( BUY_BUTTON_COOR[0] + BUY_BUTTON[0]/2 - Buy_TEXT.get_rect().width/2, BUY_BUTTON_COOR[1] + BUY_BUTTON[1]/2 - Buy_TEXT.get_rect().height/2 ) )
+
+        # 'Sell' Button:
+        pygame.draw.rect(screen, BROWN, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
+        pygame.draw.rect(screen, DARKGREY, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        screen.blit(Sell_TEXT, (SELL_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Sell_TEXT.get_rect().width / 2,
+                                SELL_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Sell_TEXT.get_rect().height / 2))
+
+        # 'Equip' Button:
+        pygame.draw.rect(screen, BROWN, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
+        pygame.draw.rect(screen, DARKGREY, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        screen.blit(Equip_TEXT, (EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Equip_TEXT.get_rect().width / 2,
+                                 EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Equip_TEXT.get_rect().height / 2))
+
+        # 'Continue' Button:
         pygame.draw.rect(screen, DARKGREY, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]])
-        screen.blit(Continue_TEXT, ( Continue_TEXT_COOR[0], Continue_TEXT_COOR[1] ))
+        pygame.draw.rect(screen, BLACK, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 6)
+        screen.blit(Continue_TEXT, (Continue_TEXT_COOR[0], Continue_TEXT_COOR[1]))
 
-        pygame.draw.rect( screen, LIGHTGREY, [ BUY_COOR[0], BUY_COOR[1], BUY[0], BUY[1] ] )
-        pygame.draw.rect( screen, LIGHTGREY, [ BUY_COOR[0] + 250, BUY_COOR[1], BUY[0], BUY[1] ] )
-        pygame.draw.rect( screen, LIGHTGREY, [ BUY_COOR[0] + 500, BUY_COOR[1], BUY[0], BUY[1] ] )
-        pygame.draw.rect(screen, LIGHTGREY, [BUY_COOR[0], BUY_COOR[1] + 200, BUY[0], BUY[1] ] )
-        pygame.draw.rect(screen, LIGHTGREY, [BUY_COOR[0] + 250, BUY_COOR[1] + 200, BUY[0], BUY[1] ] )
-        pygame.draw.rect(screen, LIGHTGREY, [BUY_COOR[0] + 500, BUY_COOR[1] + 200, BUY[0], BUY[1] ] )
 
-        screen.blit( Steel_Arrow, (BUY_COOR[0] + BUY[0]/2 - Steel_Arrow.get_rect().width/2, BUY_COOR[1] + BUY[1]/2 - Steel_Arrow.get_rect().height/2) )
-        screen.blit( Hollowpoint_Arrow, (BUY_COOR[0] + BUY[0]/2 - Hollowpoint_Arrow.get_rect().width/2 + 250, BUY_COOR[1] + BUY[1]/2 - Hollowpoint_Arrow.get_rect().height/2) )
-        screen.blit( Frost_Arrow, (BUY_COOR[0] + BUY[0]/2 - Frost_Arrow.get_rect().width/2 + 500, BUY_COOR[1] + BUY[1]/2 - Frost_Arrow.get_rect().height/2) )
-        # screen.blit(Tri_Arrow, (BUY_COOR[0] + BUY[0] / 2 - Tri_Arrow.get_rect().width / 2, BUY_COOR[1] + BUY[1] / 2 - Tri_Arrow.get_rect().height / 2 + 200))
-        # screen.blit(Hollowpoint_Arrow, (BUY_COOR[0] + BUY[0] / 2 - Hollowpoint_Arrow.get_rect().width / 2 + 250, BUY_COOR[1] + BUY[1] / 2 - Hollowpoint_Arrow.get_rect().height / 2 + 200))
-        screen.blit(Tri_Arrow, (BUY_COOR[0] + BUY[0] / 2 - Tri_Arrow.get_rect().width / 2, BUY_COOR[1] + BUY[1] / 2 - Tri_Arrow.get_rect().height / 2 + 200))
+        if arrowOneBorder:
+            pygame.draw.rect(screen, WHITE, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+        if arrowTwoBorder:
+            pygame.draw.rect(screen, WHITE, [ARROW_BUTTON_COOR[0] + 400, ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+        if arrowThreeBorder:
+            pygame.draw.rect( screen, WHITE, [ARROW_BUTTON_COOR[0] + 800, ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT )
+        if arrowFourBorder:
+            pygame.draw.rect( screen, WHITE, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1] + 300, ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT )
 
 
         for event in pygame.event.get():
+            mousePos = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+            # Hover Highlight:
+            if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]:  # Steel Arrows
+                arrowOneBorder = True
+            else:
+                arrowOneBorder = False
+            if ARROW_BUTTON_COOR[0] + 400 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 400 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]:  # Steel Arrows
+                arrowTwoBorder = True
+            else:
+                arrowTwoBorder = False
+            if ARROW_BUTTON_COOR[0] + 800 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 800 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]:  # Steel Arrows
+                arrowThreeBorder = True
+            else:
+                arrowThreeBorder = False
+            if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] + 300 <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] + 300:  # Steel Arrows
+                arrowFourBorder = True
+            else:
+                arrowFourBorder = False
+
+
             if event.type == MOUSEBUTTONDOWN:
-                mousePos = pygame.mouse.get_pos()
+
                 if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
                    displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
                     runningGame = True
-                    runningIntermissionMenu = False
+                    runningArmoryMenu = False
 
-                if BUY_COOR[0] <= mousePos[0] <= BUY_COOR[0] + BUY[0] and BUY_COOR[1] <= mousePos[1] <= BUY_COOR[1] + BUY[1]: # Steel Arrows
-                    Player1.INVENTORY['Steel_Arrows'] += 10
-                    print("Steel Arrow Count: " + str(Player1.INVENTORY.get('Steel_Arrows')))
+                # Arrow Select Button Functionality:
+                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+                    SELECTED = SteelArrow("Steel_Arrows", Steel_Arrow, 24, 7, 25, Player1.playerAngle)
+                    arrowOneClickedBorder = True
+                if ARROW_BUTTON_COOR[0] + 400 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 400 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+                    SELECTED = HollowpointArrow("Hollowpoint_Arrows", Hollowpoint_Arrow, 24, 5, 30, Player1.playerAngle)
+                    arrowOneBorder = False
+                    arrowTwoBorder = True
+                    arrowThreeBorder = False
+                    arrowFourBorder = False
+                if ARROW_BUTTON_COOR[0] + 800 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 800 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+                    SELECTED = FrostArrow("Frost_Arrows", Frost_Arrow, 35, 4, 35, Player1.playerAngle)
+                    arrowOneBorder = False
+                    arrowTwoBorder = False
+                    arrowThreeBorder = True
+                    arrowFourBorder = False
+                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] + 300 <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] + 300: # Steel Arrows
+                    SELECTED = TriArrow("Tri_Arrows", Tri_Arrow, 24, 4, 35, Player1.playerAngle)
+                    arrowOneBorder = False
+                    arrowTwoBorder = False
+                    arrowThreeBorder = False
+                    arrowFourBorder = True
+
+                # Buy Button Functionality:
+                if SELECTED is not None and BUY_BUTTON_COOR[0] <= mousePos[0] <= BUY_BUTTON_COOR[0] + BUY_BUTTON[0] and BUY_BUTTON_COOR[1] <= mousePos[1] <= BUY_BUTTON_COOR[1] + BUY_BUTTON[1]:
+                    Player1.INVENTORY[SELECTED.getName()] += 50
+                    print( "New " + str(SELECTED.getName()) + " amount: " + str(Player1.INVENTORY[SELECTED.getName()]) )
+
+                # Sell Button Functionality:
+                if SELECTED is not None and SELL_BUTTON_COOR[0] <= mousePos[0] <= SELL_BUTTON_COOR[0] + SELL_BUTTON[0] and SELL_BUTTON_COOR[1] <= mousePos[1] <= SELL_BUTTON_COOR[1] + SELL_BUTTON[1]:
+                    if Player1.INVENTORY[SELECTED.getName()] >= 50:
+                        Player1.INVENTORY[SELECTED.getName()] -= 50
+                        print("New " + str(SELECTED.getName()) + " amount: " + str(Player1.INVENTORY[SELECTED.getName()]))
+                    else:
+                        print("Not enough arrows to sell!")
+
+                # Equip Button Functionality:
+                if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
+                    EQUIPING = True
+
+                    while EQUIPING:
+                        for newEvent in pygame.event.get():
+                            if newEvent.type == MOUSEBUTTONDOWN:
+                                mousePos = pygame.mouse.get_pos()
+
+                                if ITEM_SLOT2_COOR[0] <= mousePos[0] <= ITEM_SLOT2_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT2_COOR[1] <= mousePos[1] <= ITEM_SLOT2_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    HotBar.updateArrow(2, SELECTED)
+                                    selectedArrows[1] = SELECTED
+                                    print("Equipped at Slot 2")
+                                    EQUIPING = False
+                                    SELECTED = None
+
+                                elif ITEM_SLOT3_COOR[0] <= mousePos[0] <= ITEM_SLOT3_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT3_COOR[1] <= mousePos[1] <= ITEM_SLOT3_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    HotBar.updateArrow(3, SELECTED)
+                                    selectedArrows[2] = SELECTED
+                                    print("Equipped at Slot 3")
+                                    EQUIPING = False
+                                    SELECTED = None
+
+                                elif ITEM_SLOT4_COOR[0] <= mousePos[0] <= ITEM_SLOT4_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT4_COOR[1] <= mousePos[1] <= ITEM_SLOT4_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    HotBar.updateArrow(4, SELECTED)
+                                    selectedArrows[3] = SELECTED
+                                    print("Equipped at Slot 4")
+                                    EQUIPING = False
+                                    SELECTED = None
+
+
 
 
         pygame.display.update()
         clock.tick(120)
 
-    return runningGame, runningIntermissionMenu
+    return runningGame, runningArmoryMenu, selectedHotBarArrows
 
 
 def HELP_MENU():
 
     FONT = pygame.font.SysFont("Times New Roman, Arial", 100)
     Back_TEXT = FONT.render("Back", True, RED)
+
+    backBorder = False
+    backClickBorder = False
 
     runningHelpMenu = True
 
@@ -362,15 +534,32 @@ def HELP_MENU():
         y = (((displayWidth * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (HELP_MENU_BACK[0] / 2))
 
         pygame.draw.rect(screen, DARKGREY, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]])
+        pygame.draw.rect(screen, BLACK, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]], 4)
         screen.blit(Back_TEXT, (x + HELP_MENU_BACK[0] / 2 - Back_TEXT.get_rect().width / 2, y + HELP_MENU_BACK[1] / 2 - Back_TEXT.get_rect().height / 2))
 
+        if backBorder:
+            pygame.draw.rect(screen, WHITE, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]], 4)
+        if backClickBorder:
+            pygame.draw.rect(screen, RED, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]], 8)
+
         for event in pygame.event.get():
+            mousePos = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+            if x <= mousePos[0] <= x + HELP_MENU_BACK[0] and y <= mousePos[1] <= y + HELP_MENU_BACK[1]:
+                backBorder = True
+            else:
+                backBorder = False
+
             if event.type == MOUSEBUTTONDOWN:
-                mousePos = pygame.mouse.get_pos()
+                if x <= mousePos[0] <= x + HELP_MENU_BACK[0] and y <= mousePos[1] <= y + HELP_MENU_BACK[1]:
+                    backClickBorder = True
+
+            if event.type == MOUSEBUTTONUP:
+                backClickBorder = False
                 if x <= mousePos[0] <= x + HELP_MENU_BACK[0] and y <= mousePos[1] <= y + HELP_MENU_BACK[1]:
                     runningHelpMenu = False
 
@@ -399,12 +588,19 @@ def PAUSE_MENU():
                 pygame.quit()
                 sys.exit()
 
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    runningPauseMenu = False
+                    runningGame = True
+
             if event.type == MOUSEBUTTONDOWN:
                 mousePos = pygame.mouse.get_pos()
+
                 if (centerText(RESUME)[0] <= mousePos[0] <= centerText(RESUME)[0] + RESUME[0] and centerText(RESUME)[1] <=
                         mousePos[1] <= centerText(RESUME)[1] + RESUME[1]):
                     runningPauseMenu = False
                     runningGame = True
+
                 if (centerText(QUIT)[0] <= mousePos[0] <= centerText(QUIT)[0] + QUIT[0] and centerText(QUIT)[1] + 300 <=
                         mousePos[1] <= centerText(QUIT)[1] + QUIT[1] + 300):
                     runningPauseMenu = False
@@ -486,8 +682,3 @@ def GAMEOVER_MENU():
 
 # Runs The game:
 MAIN_MENU()
-
-# import random
-# myList = ['a', 'b', 'c']
-# print(random.choices(myList, weights = [10, 0, 0], k = 2))
-
