@@ -29,8 +29,6 @@ class Character:
         self.playerScore = 0
 
 
-
-
     def getDamage(self, damageAmount):
         if self.targetHealth > 0:
             self.targetHealth -= damageAmount
@@ -56,7 +54,6 @@ class Character:
         #     transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
         #     transitionColor = YELLOW
 
-
         if self.currentHealth > self.targetHealth:
             self.currentHealth -= self.healthChangeSpeed
             transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
@@ -66,7 +63,25 @@ class Character:
             transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
             transitionColor = GREEN
 
+        healthBarRECT = pygame.Rect( 15, 15, self.currentHealth / self.healthRatio, 50 )
+        transitionBarRECT = pygame.Rect( healthBarRECT.right, 15, transitionWidth, 50 )
 
+        pygame.draw.rect( screen, RED, healthBarRECT )
+        pygame.draw.rect( screen, transitionColor, transitionBarRECT )
+        pygame.draw.rect( screen, WHITE, (15, 15, self.healthBarLength, 50), 4 )
+
+
+    def updateHealthBar_ARMORY(self):
+        transitionWidth, transitionColor = 0, RED
+
+        if self.currentHealth > self.targetHealth:
+            self.currentHealth -= self.healthChangeSpeed
+            transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
+            transitionColor = YELLOW
+        if self.currentHealth < self.targetHealth:
+            self.currentHealth += self.healthChangeSpeed
+            transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
+            transitionColor = GREEN
 
         healthBarRECT = pygame.Rect( 15, 15, self.currentHealth / self.healthRatio, 50 )
         transitionBarRECT = pygame.Rect( healthBarRECT.right, 15, transitionWidth, 50 )

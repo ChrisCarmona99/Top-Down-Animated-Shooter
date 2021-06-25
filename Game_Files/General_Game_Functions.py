@@ -116,19 +116,19 @@ def generateEnemySpawnCoordinates():
 def generateEnemy(SpawnLocation):
     EnemySelect = randint(1, 4)
     if EnemySelect == 1:
-        SelectedEnemy = EnemyONE(enemy_one, 0.6, 10, 13, 10, ['NONE', 'Gold_1', 'Health_Potion'], [100, 25, 5],
+        SelectedEnemy = EnemyONE(enemy_one, 6, 10, 13, 10, ['NONE', 'Gold_1', 'Health_Potion'], [100, 25, 5],
                                  SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 2:
-        SelectedEnemy = EnemyTWO(enemy_two, 0.45, 25, 21, 15, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
+        SelectedEnemy = EnemyTWO(enemy_two, 4.5, 25, 21, 15, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
                                  [100, 50, 5, 5], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 3:
-        SelectedEnemy = EnemyTHREE(enemy_three, 0.75, 45, 8, 20, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
+        SelectedEnemy = EnemyTHREE(enemy_three, 7.5, 45, 8, 20, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
                                    [100, 25, 15, 10], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 4:
-        SelectedEnemy = EnemyFOUR(enemy_four, 0.35, 65, 32, 30, ['NONE', 'Gold_2', 'Gold_3', 'Health_Potion'],
+        SelectedEnemy = EnemyFOUR(enemy_four, 3.5, 65, 32, 30, ['NONE', 'Gold_2', 'Gold_3', 'Health_Potion'],
                                   [100, 50, 5, 10], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
 
@@ -282,15 +282,15 @@ def DRAW_ARMORY_HOTBAR(selectedHotBarArrows):
     pygame.draw.rect(screen, LIGHTGREY,
                      [ITEM_SLOT4_COOR[0], ITEM_SLOT4_COOR[1], ARMORY_ITEM_SLOT[0], ARMORY_ITEM_SLOT[1]])
 
-    BORDER = 10
+
     pygame.draw.rect(screen, BLACK, [ITEM_SLOT1_COOR[0], ITEM_SLOT1_COOR[1], ARMORY_ITEM_SLOT[0], ARMORY_ITEM_SLOT[1]],
-                     BORDER)
+                     HOTBAR_ARMORY_BORDER)
     pygame.draw.rect(screen, BLACK, [ITEM_SLOT2_COOR[0], ITEM_SLOT2_COOR[1], ARMORY_ITEM_SLOT[0], ARMORY_ITEM_SLOT[1]],
-                     BORDER)
+                     HOTBAR_ARMORY_BORDER)
     pygame.draw.rect(screen, BLACK, [ITEM_SLOT3_COOR[0], ITEM_SLOT3_COOR[1], ARMORY_ITEM_SLOT[0], ARMORY_ITEM_SLOT[1]],
-                     BORDER)
+                     HOTBAR_ARMORY_BORDER)
     pygame.draw.rect(screen, BLACK, [ITEM_SLOT4_COOR[0], ITEM_SLOT4_COOR[1], ARMORY_ITEM_SLOT[0], ARMORY_ITEM_SLOT[1]],
-                     BORDER)
+                     HOTBAR_ARMORY_BORDER)
 
     index = 1
     for arrow in selectedHotBarArrows:

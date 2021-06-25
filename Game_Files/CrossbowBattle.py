@@ -3,15 +3,9 @@
 import math
 import random
 
-
 from Game_Files.General_Game_Functions import *
 from Game_Files.Arrows_CLASS import *
 from Game_Files.HotBar_CLASS import *
-
-
-# Initialize Button Dimensions:
-
-
 
 
 HotBar = DoublyLinkedList()
@@ -33,22 +27,12 @@ def MAIN_MENU():
     Help_TEXT = FONT.render( "Help", True, RED )
     Exit_TEXT = FONT.render( "Exit", True, RED)
 
-    EnemyCount = 0
-    Countdown = 1
-    firstRound = 1
+    EnemyCount, Countdown, firstRound = 0, 1, 1
 
-    playBorder = False
-    helpBorder = False
-    exitBorder = False
+    playBorder, helpBorder, exitBorder = False, False, False
+    playClickBorder, helpClickBorder, exitClickBorder = False, False, False
 
-    playClickBorder = False
-    helpClickBorder = False
-    exitClickBorder = False
-
-    runningMainMenu = True
-    runningHelpMenu = False
-    runningGame = False
-    runningPauseMenu = False
+    runningMainMenu, runningHelpMenu, runningGame, runningPauseMenu = True, False, False, False
 
 
     while runningMainMenu:
@@ -346,20 +330,26 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
 
 def ARMORY_MENU(selectedHotBar):
 
-    runningGame = True
-    runningArmoryMenu = True
+    runningGame, runningArmoryMenu = True, True
     selectedHotBarArrows = selectedHotBar
 
-    HIGHLIGHT = 8
-    arrowOneBorder = False
-    arrowTwoBorder = False
-    arrowThreeBorder = False
-    arrowFourBorder = False
 
-    arrowOneClickedBorder = False
-    arrowTwoClickedBorder = False
-    arrowThreeClickedBorder = False
-    arrowFourClickedBorder = False
+    # Button Border Control Booleans:
+    buyBorder, buyAvailableBorder, buyClickedBorder = False, False, False
+    sellBorder, sellAvailableBorder, sellClickedBorder = False, False, False
+    equipBorder, equipAvailableBorder, equipClickedBorder = False, False, False
+
+    hotbarAvailableBorder = False
+    hotbarBorder2, hotbarBorder3, hotbarBorder4 = False, False, False
+    hotbarClickedBorder2, hotbarClickedBorder3, hotbarClickedBorder4 = False, False, False
+
+    continueBorder, continueClickedBorder = False, False
+
+    HIGHLIGHT = 8
+    arrowOneBorder, arrowTwoBorder, arrowThreeBorder, arrowFourBorder = False, False, False, False
+    arrowOneClickedBorder, arrowTwoClickedBorder, arrowThreeClickedBorder, arrowFourClickedBorder = False, False, False, False
+
+
 
     SELECTED = None
 
@@ -391,10 +381,45 @@ def ARMORY_MENU(selectedHotBar):
 
         # 'Continue' Button:
         pygame.draw.rect(screen, DARKGREY, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]])
-        pygame.draw.rect(screen, BLACK, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 6)
+        pygame.draw.rect(screen, BLACK, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 4)
         screen.blit(Continue_TEXT, (Continue_TEXT_COOR[0], Continue_TEXT_COOR[1]))
 
 
+
+
+
+        # Buy Button Borders:
+        if buyAvailableBorder:
+            pygame.draw.rect(screen, LIGHTBLUE, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 4)
+        if buyBorder:
+            pygame.draw.rect(screen, WHITE, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 4)
+        if buyClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 8)
+
+        # Sell Button Borders:
+        if sellAvailableBorder:
+            pygame.draw.rect(screen, LIGHTBLUE, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        if sellBorder:
+            pygame.draw.rect(screen, WHITE, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        if sellClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 8)
+
+        # Equip Button Borders:
+
+        if equipAvailableBorder:
+            pygame.draw.rect(screen, LIGHTBLUE, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        if equipBorder:
+            pygame.draw.rect(screen, WHITE, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+        if equipClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 8)
+
+        # Continue Button Borders:
+        if continueBorder:
+            pygame.draw.rect(screen, WHITE, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 4)
+        if continueClickedBorder:
+            pygame.draw.rect(screen, RED, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 8)
+
+        # Arrow Button Borders:
         if arrowOneBorder:
             pygame.draw.rect(screen, WHITE, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
         if arrowTwoBorder:
@@ -404,6 +429,17 @@ def ARMORY_MENU(selectedHotBar):
         if arrowFourBorder:
             pygame.draw.rect( screen, WHITE, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1] + 300, ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT )
 
+        if arrowOneClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+        if arrowTwoClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0] + 400, ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+        if arrowThreeClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0] + 800, ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+        if arrowFourClickedBorder:
+            pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1] + 300, ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
+
+
+
 
         for event in pygame.event.get():
             mousePos = pygame.mouse.get_pos()
@@ -412,7 +448,7 @@ def ARMORY_MENU(selectedHotBar):
                 pygame.quit()
                 sys.exit()
 
-            # Hover Highlight:
+            # Arrow Button Hover Highlight:
             if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]:  # Steel Arrows
                 arrowOneBorder = True
             else:
@@ -431,82 +467,274 @@ def ARMORY_MENU(selectedHotBar):
                 arrowFourBorder = False
 
 
+            # Buy Button Hover Highlight
+            if SELECTED is not None and BUY_BUTTON_COOR[0] <= mousePos[0] <= BUY_BUTTON_COOR[0] + BUY_BUTTON[0] and \
+                    BUY_BUTTON_COOR[1] <= mousePos[1] <= BUY_BUTTON_COOR[1] + BUY_BUTTON[1]:
+                buyBorder = True
+            else:
+                buyBorder = False
+
+            # Sell Button Hover Highlight
+            if SELECTED is not None and SELL_BUTTON_COOR[0] <= mousePos[0] <= SELL_BUTTON_COOR[0] + SELL_BUTTON[0] and \
+                    SELL_BUTTON_COOR[1] <= mousePos[1] <= SELL_BUTTON_COOR[1] + SELL_BUTTON[1]:
+                sellBorder = True
+            else:
+                sellBorder = False
+
+            # Equip Button Hover Highlight
+            if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and \
+                    EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
+                equipBorder = True
+            else:
+                equipBorder = False
+
+
+            # Continue Button Hover Highlight
+            if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
+                    displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
+                continueBorder = True
+            else:
+                continueBorder = False
+
+
+
             if event.type == MOUSEBUTTONDOWN:
 
+                # Continue Button Functionality:
                 if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
                    displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
-                    runningGame = True
-                    runningArmoryMenu = False
+                    continueClickedBorder = True
 
                 # Arrow Select Button Functionality:
-                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and \
+                        ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
                     SELECTED = SteelArrow("Steel_Arrows", Steel_Arrow, 24, 7, 25, Player1.playerAngle)
-                    arrowOneClickedBorder = True
-                if ARROW_BUTTON_COOR[0] + 400 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 400 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+                    if not arrowOneClickedBorder:
+                        arrowOneClickedBorder = True
+                    else:
+                        arrowOneClickedBorder = False
+                    arrowTwoClickedBorder = False
+                    arrowThreeClickedBorder = False
+                    arrowFourClickedBorder = False
+
+                    buyAvailableBorder = True
+                    sellAvailableBorder = True
+                    equipAvailableBorder = True
+                if ARROW_BUTTON_COOR[0] + 400 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 400 and \
+                        ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
                     SELECTED = HollowpointArrow("Hollowpoint_Arrows", Hollowpoint_Arrow, 24, 5, 30, Player1.playerAngle)
-                    arrowOneBorder = False
-                    arrowTwoBorder = True
-                    arrowThreeBorder = False
-                    arrowFourBorder = False
-                if ARROW_BUTTON_COOR[0] + 800 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 800 and ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
+
+                    if not arrowTwoClickedBorder:
+                        arrowTwoClickedBorder = True
+                    else:
+                        arrowTwoClickedBorder = False
+                    arrowOneClickedBorder = False
+                    arrowThreeClickedBorder = False
+                    arrowFourClickedBorder = False
+
+                    buyAvailableBorder = True
+                    sellAvailableBorder = True
+                    equipAvailableBorder = True
+                if ARROW_BUTTON_COOR[0] + 800 <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] + 800 and \
+                        ARROW_BUTTON_COOR[1] <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1]: # Steel Arrows
                     SELECTED = FrostArrow("Frost_Arrows", Frost_Arrow, 35, 4, 35, Player1.playerAngle)
-                    arrowOneBorder = False
-                    arrowTwoBorder = False
-                    arrowThreeBorder = True
-                    arrowFourBorder = False
-                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and ARROW_BUTTON_COOR[1] + 300 <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] + 300: # Steel Arrows
+                    if not arrowThreeClickedBorder:
+                        arrowThreeClickedBorder = True
+                    else:
+                        arrowThreeClickedBorder = False
+                    arrowOneClickedBorder = False
+                    arrowTwoClickedBorder = False
+                    arrowFourClickedBorder = False
+
+                    buyAvailableBorder = True
+                    sellAvailableBorder = True
+                    equipAvailableBorder = True
+                if ARROW_BUTTON_COOR[0] <= mousePos[0] <= ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] and \
+                        ARROW_BUTTON_COOR[1] + 300 <= mousePos[1] <= ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] + 300: # Steel Arrows
                     SELECTED = TriArrow("Tri_Arrows", Tri_Arrow, 24, 4, 35, Player1.playerAngle)
-                    arrowOneBorder = False
-                    arrowTwoBorder = False
-                    arrowThreeBorder = False
-                    arrowFourBorder = True
+                    if not arrowFourClickedBorder:
+                        arrowFourClickedBorder = True
+                    else:
+                        arrowFourClickedBorder = False
+                    arrowOneClickedBorder = False
+                    arrowTwoClickedBorder = False
+                    arrowThreeClickedBorder = False
+
+                    buyAvailableBorder = True
+                    sellAvailableBorder = True
+                    equipAvailableBorder = True
 
                 # Buy Button Functionality:
-                if SELECTED is not None and BUY_BUTTON_COOR[0] <= mousePos[0] <= BUY_BUTTON_COOR[0] + BUY_BUTTON[0] and BUY_BUTTON_COOR[1] <= mousePos[1] <= BUY_BUTTON_COOR[1] + BUY_BUTTON[1]:
+                if SELECTED is not None and BUY_BUTTON_COOR[0] <= mousePos[0] <= BUY_BUTTON_COOR[0] + BUY_BUTTON[0] and \
+                        BUY_BUTTON_COOR[1] <= mousePos[1] <= BUY_BUTTON_COOR[1] + BUY_BUTTON[1]:
+                    buyClickedBorder = True
                     Player1.INVENTORY[SELECTED.getName()] += 50
-                    print( "New " + str(SELECTED.getName()) + " amount: " + str(Player1.INVENTORY[SELECTED.getName()]) )
+
 
                 # Sell Button Functionality:
-                if SELECTED is not None and SELL_BUTTON_COOR[0] <= mousePos[0] <= SELL_BUTTON_COOR[0] + SELL_BUTTON[0] and SELL_BUTTON_COOR[1] <= mousePos[1] <= SELL_BUTTON_COOR[1] + SELL_BUTTON[1]:
+                if SELECTED is not None and SELL_BUTTON_COOR[0] <= mousePos[0] <= SELL_BUTTON_COOR[0] + SELL_BUTTON[0] and \
+                        SELL_BUTTON_COOR[1] <= mousePos[1] <= SELL_BUTTON_COOR[1] + SELL_BUTTON[1]:
+                    sellClickedBorder = True
                     if Player1.INVENTORY[SELECTED.getName()] >= 50:
                         Player1.INVENTORY[SELECTED.getName()] -= 50
                         print("New " + str(SELECTED.getName()) + " amount: " + str(Player1.INVENTORY[SELECTED.getName()]))
                     else:
                         print("Not enough arrows to sell!")
 
-                # Equip Button Functionality:
-                if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
-                    EQUIPING = True
 
+                # Equip Button Functionality:
+                if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and \
+                        EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
+                    equipClickedBorder = True
+
+
+
+
+            if event.type == MOUSEBUTTONUP:
+
+                continueClickedBorder = False
+
+                buyClickedBorder = False
+                sellClickedBorder = False
+
+                # Equip Button Functionality:
+                if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and \
+                        EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
+
+                    hotbarAvailableBorder = True
+
+                    EQUIPING = True
                     while EQUIPING:
+
+                        # HotBar Borders:
+                        if hotbarAvailableBorder:
+                            pygame.draw.rect(screen, LIGHTBLUE,
+                                             [ITEM_SLOT2_COOR[0], ITEM_SLOT2_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                            pygame.draw.rect(screen, LIGHTBLUE,
+                                             [ITEM_SLOT3_COOR[0], ITEM_SLOT3_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                            pygame.draw.rect(screen, LIGHTBLUE,
+                                             [ITEM_SLOT4_COOR[0], ITEM_SLOT4_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+
+                        if hotbarBorder2:
+                            pygame.draw.rect(screen, WHITE,
+                                             [ITEM_SLOT2_COOR[0], ITEM_SLOT2_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                        if hotbarBorder3:
+                            pygame.draw.rect(screen, WHITE,
+                                             [ITEM_SLOT3_COOR[0], ITEM_SLOT3_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                        if hotbarBorder4:
+                            pygame.draw.rect(screen, WHITE,
+                                             [ITEM_SLOT4_COOR[0], ITEM_SLOT4_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+
+                        if hotbarClickedBorder2:
+                            pygame.draw.rect(screen, YELLOW,
+                                             [ITEM_SLOT2_COOR[0], ITEM_SLOT2_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                        if hotbarClickedBorder3:
+                            pygame.draw.rect(screen, YELLOW,
+                                             [ITEM_SLOT3_COOR[0], ITEM_SLOT3_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+                        if hotbarClickedBorder4:
+                            pygame.draw.rect(screen, YELLOW,
+                                             [ITEM_SLOT4_COOR[0], ITEM_SLOT4_COOR[1], ARMORY_ITEM_SLOT[0],
+                                              ARMORY_ITEM_SLOT[1]],
+                                             HOTBAR_ARMORY_BORDER)
+
+
                         for newEvent in pygame.event.get():
+                            mousePos = pygame.mouse.get_pos()
+
+                            if ITEM_SLOT2_COOR[0] <= mousePos[0] <= ITEM_SLOT2_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                    ITEM_SLOT2_COOR[1] <= mousePos[1] <= ITEM_SLOT2_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                hotbarBorder2 = True
+                            else:
+                                hotbarBorder2 = False
+
+                            if ITEM_SLOT3_COOR[0] <= mousePos[0] <= ITEM_SLOT3_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                    ITEM_SLOT3_COOR[1] <= mousePos[1] <= ITEM_SLOT3_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                hotbarBorder3 = True
+                            else:
+                                hotbarBorder3 = False
+
+                            if ITEM_SLOT4_COOR[0] <= mousePos[0] <= ITEM_SLOT4_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                    ITEM_SLOT4_COOR[1] <= mousePos[1] <= ITEM_SLOT4_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                hotbarBorder4 = True
+                            else:
+                                hotbarBorder4 = False
+
+
+
                             if newEvent.type == MOUSEBUTTONDOWN:
-                                mousePos = pygame.mouse.get_pos()
 
                                 if ITEM_SLOT2_COOR[0] <= mousePos[0] <= ITEM_SLOT2_COOR[0] + ARMORY_ITEM_SLOT[0] and \
                                         ITEM_SLOT2_COOR[1] <= mousePos[1] <= ITEM_SLOT2_COOR[1] + ARMORY_ITEM_SLOT[1]:
-                                    HotBar.updateArrow(2, SELECTED)
-                                    selectedArrows[1] = SELECTED
-                                    print("Equipped at Slot 2")
-                                    EQUIPING = False
-                                    SELECTED = None
+                                    hotbarClickedBorder2 = True
 
                                 elif ITEM_SLOT3_COOR[0] <= mousePos[0] <= ITEM_SLOT3_COOR[0] + ARMORY_ITEM_SLOT[0] and \
                                         ITEM_SLOT3_COOR[1] <= mousePos[1] <= ITEM_SLOT3_COOR[1] + ARMORY_ITEM_SLOT[1]:
-                                    HotBar.updateArrow(3, SELECTED)
-                                    selectedArrows[2] = SELECTED
-                                    print("Equipped at Slot 3")
-                                    EQUIPING = False
-                                    SELECTED = None
+                                    hotbarClickedBorder3 = True
 
                                 elif ITEM_SLOT4_COOR[0] <= mousePos[0] <= ITEM_SLOT4_COOR[0] + ARMORY_ITEM_SLOT[0] and \
                                         ITEM_SLOT4_COOR[1] <= mousePos[1] <= ITEM_SLOT4_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    hotbarClickedBorder4 = True
+
+
+
+                            if newEvent.type == MOUSEBUTTONUP:
+                                if ITEM_SLOT2_COOR[0] <= mousePos[0] <= ITEM_SLOT2_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT2_COOR[1] <= mousePos[1] <= ITEM_SLOT2_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    hotbarClickedBorder2 = False
+                                    HotBar.updateArrow(2, SELECTED)
+                                    selectedArrows[1] = SELECTED
+                                    print("Equipped at Slot 2")
+                                    EQUIPING, SELECTED = False, None
+
+                                    equipClickedBorder = False
+                                    equipAvailableBorder = False
+                                    equipBorder = False
+
+                                elif ITEM_SLOT3_COOR[0] <= mousePos[0] <= ITEM_SLOT3_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT3_COOR[1] <= mousePos[1] <= ITEM_SLOT3_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    hotbarClickedBorder3 = False
+                                    HotBar.updateArrow(3, SELECTED)
+                                    selectedArrows[2] = SELECTED
+                                    print("Equipped at Slot 3")
+                                    EQUIPING, SELECTED = False, None
+
+                                    equipClickedBorder = False
+                                    equipAvailableBorder = False
+                                    equipBorder = False
+
+                                elif ITEM_SLOT4_COOR[0] <= mousePos[0] <= ITEM_SLOT4_COOR[0] + ARMORY_ITEM_SLOT[0] and \
+                                        ITEM_SLOT4_COOR[1] <= mousePos[1] <= ITEM_SLOT4_COOR[1] + ARMORY_ITEM_SLOT[1]:
+                                    hotbarClickedBorder4 = False
                                     HotBar.updateArrow(4, SELECTED)
                                     selectedArrows[3] = SELECTED
                                     print("Equipped at Slot 4")
-                                    EQUIPING = False
-                                    SELECTED = None
+                                    EQUIPING, SELECTED = False, None
 
+                                    equipClickedBorder = False
+                                    equipAvailableBorder = False
+                                    equipBorder = False
+
+
+                # Continue Button Functionality:
+                if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
+                   displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
+                    runningGame, runningArmoryMenu = True, False
 
 
 
@@ -521,8 +749,7 @@ def HELP_MENU():
     FONT = pygame.font.SysFont("Times New Roman, Arial", 100)
     Back_TEXT = FONT.render("Back", True, RED)
 
-    backBorder = False
-    backClickBorder = False
+    backBorder, backClickBorder = False, False
 
     runningHelpMenu = True
 
@@ -571,30 +798,64 @@ def PAUSE_MENU():
 
     FONT = pygame.font.SysFont("Times New Roman, Arial", 100)
     Resume_TEXT = FONT.render("Resume", True, RED)
-    Quit_TEXT = FONT.render("Main Menu", True, RED)
+    MainMenu_TEXT = FONT.render("Main Menu", True, RED)
 
-    runningGame = True
-    runningPauseMenu = True
+    resumeBorder, mainmenuBorder = False, False
+    resumeClickBorder, mainmenuClickBorder = False, False
+
+    runningGame, runningPauseMenu = True, True
 
     while runningPauseMenu:
         pygame.draw.rect(screen, LIGHTGREY, [centerText(PAUSE_BACKGROUND)[0], centerText(PAUSE_BACKGROUND)[1], PAUSE_BACKGROUND[0], PAUSE_BACKGROUND[1]])
         pygame.draw.rect(screen, DARKGREY, [centerText(RESUME)[0], centerText(RESUME)[1], RESUME[0], RESUME[1]])
         pygame.draw.rect(screen, DARKGREY, [centerText(QUIT)[0], centerText(QUIT)[1] + 300, QUIT[0], QUIT[1]])
         screen.blit(Resume_TEXT, ( displayWidth / 2 - Resume_TEXT.get_rect().width / 2, displayHeight / 2 - Resume_TEXT.get_rect().height / 2))
-        screen.blit(Quit_TEXT, ( displayWidth / 2 - Quit_TEXT.get_rect().width / 2, displayHeight / 2 - Quit_TEXT.get_rect().height / 2 + 300))
+        screen.blit(MainMenu_TEXT, ( displayWidth / 2 - MainMenu_TEXT.get_rect().width / 2, displayHeight / 2 - MainMenu_TEXT.get_rect().height / 2 + 300))
+
+        if resumeBorder:
+            pygame.draw.rect(screen, WHITE, [centerText(RESUME)[0], centerText(RESUME)[1], RESUME[0], RESUME[1]], 4)
+        if mainmenuBorder:
+            pygame.draw.rect(screen, WHITE, [centerText(QUIT)[0], centerText(QUIT)[1] + 300, QUIT[0], QUIT[1]], 4)
+        if resumeClickBorder:
+            pygame.draw.rect(screen, RED, [centerText(RESUME)[0], centerText(RESUME)[1], RESUME[0], RESUME[1]], 8)
+        if mainmenuClickBorder:
+            pygame.draw.rect(screen, RED, [centerText(QUIT)[0], centerText(QUIT)[1] + 300, QUIT[0], QUIT[1]], 8)
 
         for event in pygame.event.get():
+            mousePos = pygame.mouse.get_pos()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+
+            if centerText(RESUME)[0] <= mousePos[0] <= centerText(RESUME)[0] + RESUME[0] and centerText(RESUME)[1] <= mousePos[1] <= centerText(RESUME)[1] + RESUME[1]:
+                resumeBorder = True
+            else:
+                resumeBorder = False
+
+            if centerText(QUIT)[0] <= mousePos[0] <= centerText(QUIT)[0] + QUIT[0] and centerText(QUIT)[1] + 300 <= mousePos[1] <= centerText(QUIT)[1] + QUIT[1] + 300:
+                mainmenuBorder = True
+            else:
+                mainmenuBorder = False
+
+
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    runningPauseMenu = False
-                    runningGame = True
+                    pass
 
             if event.type == MOUSEBUTTONDOWN:
-                mousePos = pygame.mouse.get_pos()
+                if (centerText(RESUME)[0] <= mousePos[0] <= centerText(RESUME)[0] + RESUME[0] and centerText(RESUME)[1] <=
+                        mousePos[1] <= centerText(RESUME)[1] + RESUME[1]):
+                    resumeClickBorder = True
+
+                if (centerText(QUIT)[0] <= mousePos[0] <= centerText(QUIT)[0] + QUIT[0] and centerText(QUIT)[1] + 300 <=
+                        mousePos[1] <= centerText(QUIT)[1] + QUIT[1] + 300):
+                    mainmenuClickBorder = True
+
+            if event.type == MOUSEBUTTONUP:
+                resumeClickBorder = False
+                mainmenuClickBorder = False
 
                 if (centerText(RESUME)[0] <= mousePos[0] <= centerText(RESUME)[0] + RESUME[0] and centerText(RESUME)[1] <=
                         mousePos[1] <= centerText(RESUME)[1] + RESUME[1]):
@@ -641,8 +902,7 @@ def GAMEOVER_MENU():
     Exit_TEXT = FONT.render( "Main Menu", True, RED )
 
     runningGameOverMenu = True
-    runningGame = True # Just initialized... assignment not relevant
-    restartGame = True # Just initialized... assignment not relevant
+    runningGame, restartGame = True, True # Just initialized... assignment not relevant
 
     while runningGameOverMenu:
         screen.fill(0)
