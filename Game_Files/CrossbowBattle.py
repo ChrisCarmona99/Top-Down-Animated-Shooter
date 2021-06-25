@@ -153,7 +153,7 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
 
     enemySpawnTimer = 10
     Countdown = CountDownSet
-    MaximumEnemies = 1
+    MaximumEnemies = 25
 
 
     currentlySelectedItemSlot = HotBar.head # Initialized at ItemSlot 1
