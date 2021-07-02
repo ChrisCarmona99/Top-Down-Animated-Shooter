@@ -1,6 +1,4 @@
 
-import random
-
 # from Game_Files.Arrows_CLASS import Arrow
 from Game_Files.Arrows_CLASS import *
 from Game_Files.Character_CLASS import *
@@ -22,7 +20,7 @@ def DISPLAY_WAVE(currentRound):
     CurrentWave_TEXT = FONT.render(currentRoundText, True, RED)
 
     drawWaveCount = True
-    drawWaveCountTimer = 250  # Sets how long to draw 'Wave #' for each round
+    drawWaveCountTimer = 100  # Sets how long to draw 'Wave #' for each round
 
     while drawWaveCount:
         screen.blit(CurrentWave_TEXT, (displayWidth / 2 - CurrentWave_TEXT.get_rect().width / 2,
@@ -116,19 +114,19 @@ def generateEnemySpawnCoordinates():
 def generateEnemy(SpawnLocation):
     EnemySelect = randint(1, 4)
     if EnemySelect == 1:
-        SelectedEnemy = EnemyONE(enemy_one, 6, 10, 13, 10, ['NONE', 'Gold_1', 'Health_Potion'], [100, 25, 5],
+        SelectedEnemy = EnemyONE(enemy_one, 8, 10, 13, 10, ['NONE', 'Gold_1', 'Health_Potion'], [100, 25, 5],
                                  SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 2:
-        SelectedEnemy = EnemyTWO(enemy_two, 4.5, 25, 21, 15, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
+        SelectedEnemy = EnemyTWO(enemy_two, 7, 25, 21, 15, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
                                  [100, 50, 5, 5], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 3:
-        SelectedEnemy = EnemyTHREE(enemy_three, 7.5, 45, 8, 20, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
+        SelectedEnemy = EnemyTHREE(enemy_three, 10, 45, 8, 20, ['NONE', 'Gold_1', 'Gold_2', 'Health_Potion'],
                                    [100, 25, 15, 10], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
     if EnemySelect == 4:
-        SelectedEnemy = EnemyFOUR(enemy_four, 3.5, 65, 32, 30, ['NONE', 'Gold_2', 'Gold_3', 'Health_Potion'],
+        SelectedEnemy = EnemyFOUR(enemy_four, 5, 65, 32, 30, ['NONE', 'Gold_2', 'Gold_3', 'Health_Potion'],
                                   [100, 50, 5, 10], SpawnLocation[0], SpawnLocation[1])
         return SelectedEnemy
 
@@ -137,33 +135,33 @@ def generateEnemy(SpawnLocation):
 def SHOOT_CONTROL(selectedArrow):
     if selectedArrow is not None:
         if selectedArrow.arrowName == "Iron_Arrows":
-            currentArrow = IronArrow("Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle)  # Iron Arrows
+            currentArrow = IronArrow("Iron_Arrows", Iron_Arrow, 35, 4, 0, Player1.playerAngle)  # Iron Arrows
             ARROW_LIST.append(currentArrow)
 
         elif selectedArrow.arrowName == "Steel_Arrows":
-            currentArrow = SteelArrow("Steel_Arrows", Steel_Arrow, 24, 7, 25, Player1.playerAngle)  # Steel Arrows
+            currentArrow = SteelArrow("Steel_Arrows", Steel_Arrow, 35, 7, 25, Player1.playerAngle)  # Steel Arrows
             ARROW_LIST.append(currentArrow)
 
             Player1.INVENTORY["Steel_Arrows"] -= 1
             if Player1.INVENTORY.get("Steel_Arrows") == 0:
-                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle)  # reset
+                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 35, 4, 0, Player1.playerAngle)  # reset
 
         elif selectedArrow.arrowName == "Hollowpoint_Arrows":
-            currentArrow = HollowpointArrow("Hollowpoint_Arrows", Hollowpoint_Arrow, 24, 5, 30,
+            currentArrow = HollowpointArrow("Hollowpoint_Arrows", Hollowpoint_Arrow, 30, 5, 30,
                                             Player1.playerAngle)  # Hollowpoint Arrows
             ARROW_LIST.append(currentArrow)
 
             Player1.INVENTORY["Hollowpoint_Arrows"] -= 1
             if Player1.INVENTORY.get("Hollowpoint_Arrows") == 0:
-                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle)  # reset
+                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 35, 4, 0, Player1.playerAngle)  # reset
 
         elif selectedArrow.arrowName == "Tri_Arrows":
-            currentArrow = TriArrow("Tri_Arrows", Tri_Arrow, 24, 4, 35, Player1.playerAngle)  # Tri Arrows
+            currentArrow = TriArrow("Tri_Arrows", Tri_Arrow, 35, 4, 35, Player1.playerAngle)  # Tri Arrows
             ARROW_LIST.append(currentArrow)
 
             Player1.INVENTORY["Tri_Arrows"] -= 1
             if Player1.INVENTORY.get("Tri_Arrows") == 0:
-                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle)  # reset
+                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 35, 4, 0, Player1.playerAngle)  # reset
 
         elif selectedArrow.arrowName == "Frost_Arrows":
             currentArrow = FrostArrow("Frost_Arrows", Frost_Arrow, 35, 4, 35, Player1.playerAngle)  # Frost Arrows
@@ -171,7 +169,7 @@ def SHOOT_CONTROL(selectedArrow):
 
             Player1.INVENTORY["Frost_Arrows"] -= 1
             if Player1.INVENTORY.get("Frost_Arrows") == 0:
-                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 24, 4, 0, Player1.playerAngle)  # reset
+                selectedArrow = IronArrow("Iron_Arrows", Iron_Arrow, 35, 4, 0, Player1.playerAngle)  # reset
     else:
         print("No arrow in this slot")
 
@@ -237,7 +235,7 @@ def COLLISION_CONTROL():
 
 # ITEM FUNCTIONS:
 def getNewItem(killedEnemy):
-    droppedItem = random.choices(killedEnemy.potentialItemDrops, weights=killedEnemy.dropRates, k=1)
+    droppedItem = random.choices(killedEnemy.potentialItemDrops, weights = killedEnemy.dropRates, k = 1)
     if droppedItem == ['Gold_1']:
         newItem = Gold(Gold_1, 22, killedEnemy.hitEpicenter, 10)
         ITEM_LIST.append(newItem)
@@ -355,3 +353,28 @@ def DRAW_ARROW_BUTTONS():
     screen.blit(HollowpointPrice_TEXT, (ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] / 2 - HollowpointPrice_TEXT.get_rect().width / 2 + 400, ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] - HollowpointPrice_TEXT.get_rect().height))
     screen.blit(FrostPrice_TEXT, (ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] / 2 - FrostPrice_TEXT.get_rect().width / 2 + 800, ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] - FrostPrice_TEXT.get_rect().height))
     screen.blit(TriPrice_TEXT, (ARROW_BUTTON_COOR[0] + ARROW_BUTTON[0] / 2 - TriPrice_TEXT.get_rect().width / 2, ARROW_BUTTON_COOR[1] + ARROW_BUTTON[1] - TriPrice_TEXT.get_rect().height + 300))
+
+def DRAW_OTHER_BUTTONS():
+    # 'Buy' Button:
+    pygame.draw.rect(screen, BROWN, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]])
+    pygame.draw.rect(screen, DARKGREY, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 4)
+    screen.blit(Buy_TEXT, (BUY_BUTTON_COOR[0] + BUY_BUTTON[0] / 2 - Buy_TEXT.get_rect().width / 2,
+                           BUY_BUTTON_COOR[1] + BUY_BUTTON[1] / 2 - Buy_TEXT.get_rect().height / 2))
+
+    # 'Sell' Button:
+    pygame.draw.rect(screen, BROWN, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
+    pygame.draw.rect(screen, DARKGREY, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
+    screen.blit(Sell_TEXT, (SELL_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Sell_TEXT.get_rect().width / 2,
+                            SELL_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Sell_TEXT.get_rect().height / 2))
+
+    # 'Equip' Button:
+    pygame.draw.rect(screen, BROWN, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
+    pygame.draw.rect(screen, DARKGREY, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]],
+                     4)
+    screen.blit(Equip_TEXT, (EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Equip_TEXT.get_rect().width / 2,
+                             EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Equip_TEXT.get_rect().height / 2))
+
+    # 'Continue' Button:
+    pygame.draw.rect(screen, DARKGREY, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]])
+    pygame.draw.rect(screen, BLACK, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 4)
+    screen.blit(Continue_TEXT, (Continue_TEXT_COOR[0], Continue_TEXT_COOR[1]))

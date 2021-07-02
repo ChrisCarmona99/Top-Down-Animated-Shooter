@@ -45,15 +45,6 @@ class Character:
         transitionWidth = 0
         transitionColor = RED
 
-        # if self.currentHealth < self.targetHealth:
-        #     self.currentHealth += self.healthChangeSpeed
-        #     transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
-        #     transitionColor = GREEN
-        # if self.currentHealth > self.targetHealth:
-        #     self.currentHealth -= self.healthChangeSpeed
-        #     transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
-        #     transitionColor = YELLOW
-
         if self.currentHealth > self.targetHealth:
             self.currentHealth -= self.healthChangeSpeed
             transitionWidth = int( (self.targetHealth - self.currentHealth) / self.healthRatio )
@@ -106,4 +97,4 @@ class Character:
 
 
 
-Player1 = Character(player, 7.8, 200, "")
+Player1 = Character(player, 12, 200, "")

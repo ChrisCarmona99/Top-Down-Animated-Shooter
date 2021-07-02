@@ -17,10 +17,14 @@ clock = pygame.time.Clock()
 
 ctypes.windll.user32.SetProcessDPIAware()
 
-displayWidth = ctypes.windll.user32.GetSystemMetrics(0) - 200
-displayHeight = ctypes.windll.user32.GetSystemMetrics(1) - 200
+displayWidth = ctypes.windll.user32.GetSystemMetrics(0)
+displayHeight = ctypes.windll.user32.GetSystemMetrics(1)
+# displayWidth = ctypes.windll.user32.GetSystemMetrics(0) - 200
+# displayHeight = ctypes.windll.user32.GetSystemMetrics(1) - 200
 flags = FULLSCREEN | DOUBLEBUF
+# flags = FULLSCREEN | SCALED
 screen = pygame.display.set_mode( (displayWidth, displayHeight), flags, 16)
+
 screen.set_alpha(None)
 
 pygame.display.set_caption('Crossbow Battle')

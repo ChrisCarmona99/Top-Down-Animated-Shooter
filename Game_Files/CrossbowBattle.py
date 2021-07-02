@@ -319,13 +319,14 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
 
         if Shooting:
             if ShootTimer == 0:
-                selectedArrow = SHOOT_CONTROL(selectedArrow)
+                # selectedArrow = SHOOT_CONTROL(selectedArrow)
+                SHOOT_CONTROL(selectedArrow)
                 ShootTimer = 15
         if ShootTimer != 0:
             ShootTimer -= 1
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(120)
 
 
 def ARMORY_MENU(selectedHotBar):
@@ -354,6 +355,7 @@ def ARMORY_MENU(selectedHotBar):
     SELECTED = None
 
     while runningArmoryMenu:
+
         screen.fill(DARKORANGE)
 
         # HotBar:
@@ -362,30 +364,8 @@ def ARMORY_MENU(selectedHotBar):
         # Arrow Buttons:
         DRAW_ARROW_BUTTONS()
 
-        # 'Buy' Button:
-        pygame.draw.rect( screen, BROWN, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]] )
-        pygame.draw.rect( screen, DARKGREY, [BUY_BUTTON_COOR[0], BUY_BUTTON_COOR[1], BUY_BUTTON[0], BUY_BUTTON[1]], 4 )
-        screen.blit( Buy_TEXT, ( BUY_BUTTON_COOR[0] + BUY_BUTTON[0]/2 - Buy_TEXT.get_rect().width/2, BUY_BUTTON_COOR[1] + BUY_BUTTON[1]/2 - Buy_TEXT.get_rect().height/2 ) )
-
-        # 'Sell' Button:
-        pygame.draw.rect(screen, BROWN, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
-        pygame.draw.rect(screen, DARKGREY, [SELL_BUTTON_COOR[0], SELL_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
-        screen.blit(Sell_TEXT, (SELL_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Sell_TEXT.get_rect().width / 2,
-                                SELL_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Sell_TEXT.get_rect().height / 2))
-
-        # 'Equip' Button:
-        pygame.draw.rect(screen, BROWN, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]])
-        pygame.draw.rect(screen, DARKGREY, [EQUIP_BUTTON_COOR[0], EQUIP_BUTTON_COOR[1], EQUIP_BUTTON[0], EQUIP_BUTTON[1]], 4)
-        screen.blit(Equip_TEXT, (EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] / 2 - Equip_TEXT.get_rect().width / 2,
-                                 EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1] / 2 - Equip_TEXT.get_rect().height / 2))
-
-        # 'Continue' Button:
-        pygame.draw.rect(screen, DARKGREY, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]])
-        pygame.draw.rect(screen, BLACK, [CONTINUE_COOR[0], CONTINUE_COOR[1], CONTINUE[0], CONTINUE[1]], 4)
-        screen.blit(Continue_TEXT, (Continue_TEXT_COOR[0], Continue_TEXT_COOR[1]))
-
-
-
+        # Draw Other Buttons:
+        DRAW_OTHER_BUTTONS()
 
 
         # Buy Button Borders:
@@ -437,7 +417,6 @@ def ARMORY_MENU(selectedHotBar):
             pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0] + 800, ARROW_BUTTON_COOR[1], ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
         if arrowFourClickedBorder:
             pygame.draw.rect(screen, YELLOW, [ARROW_BUTTON_COOR[0], ARROW_BUTTON_COOR[1] + 300, ARROW_BUTTON[0], ARROW_BUTTON[1]], HIGHLIGHT)
-
 
 
 
@@ -586,7 +565,6 @@ def ARMORY_MENU(selectedHotBar):
                 if SELECTED is not None and EQUIP_BUTTON_COOR[0] <= mousePos[0] <= EQUIP_BUTTON_COOR[0] + EQUIP_BUTTON[0] and \
                         EQUIP_BUTTON_COOR[1] <= mousePos[1] <= EQUIP_BUTTON_COOR[1] + EQUIP_BUTTON[1]:
                     equipClickedBorder = True
-
 
 
 
@@ -791,7 +769,7 @@ def HELP_MENU():
                     runningHelpMenu = False
 
         pygame.display.update()
-        clock.tick(120)
+        clock.tick(60)
 
 
 def PAUSE_MENU():
@@ -934,7 +912,7 @@ def GAMEOVER_MENU():
                     RESET()
 
         pygame.display.update()
-        clock.tick(120)
+        clock.tick(60)
 
     return runningGame, restartGame
 
