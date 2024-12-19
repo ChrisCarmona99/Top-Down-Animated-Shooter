@@ -1,15 +1,15 @@
 
-# from Game_Files.Arrows_CLASS import Arrow
-from Game_Files.Arrows_CLASS import *
-from Game_Files.Character_CLASS import *
-from Game_Files.Enemy_CLASS import *
-from Game_Files.Items_CLASS import *
+# from Arrows import Arrow
+from Arrows import *
+from Character import *
+from Enemy import *
+from Items import *
 import random
 
 
 # GENERAL FUNCTIONS:
 def centerText(imageDimensions):
-    centerCoordinates = (displayWidth / 2, displayHeight / 2)
+    centerCoordinates = (display_width / 2, display_height / 2)
     placement = (centerCoordinates[0] - imageDimensions[0] / 2, centerCoordinates[1] - imageDimensions[1] / 2)
     return placement
 
@@ -23,8 +23,8 @@ def DISPLAY_WAVE(currentRound):
     drawWaveCountTimer = 100  # Sets how long to draw 'Wave #' for each round
 
     while drawWaveCount:
-        screen.blit(CurrentWave_TEXT, (displayWidth / 2 - CurrentWave_TEXT.get_rect().width / 2,
-                                       displayHeight / 2 - CurrentWave_TEXT.get_rect().height / 2 - 300))
+        screen.blit(CurrentWave_TEXT, (display_width / 2 - CurrentWave_TEXT.get_rect().width / 2,
+                                       display_height / 2 - CurrentWave_TEXT.get_rect().height / 2 - 300))
         drawWaveCountTimer -= 1
 
         for event in pygame.event.get():
@@ -41,7 +41,7 @@ def DISPLAY_WAVE(currentRound):
 
 def RESET():
     ENEMY_LIST.clear()
-    Player1.spawnPos = [displayWidth * 0.5, displayHeight * 0.5]
+    Player1.spawnPos = [display_width * 0.5, display_height * 0.5]
     Player1.currentHealth = Player1.maximumHealth
     Player1.targetHealth = Player1.maximumHealth
     Player1.playerSpeed = Player1.resetPlayerSpeed
@@ -98,16 +98,16 @@ def DRAW_GAMEPLAY_HOTBAR(selectedHotBarArrows, currentlySelectedItemSlot):
 def generateEnemySpawnCoordinates():
     SpawnLocation = randint(1, 4)
     if SpawnLocation == 1:
-        EnemySpawn = [randint(0, displayWidth), 0]
+        EnemySpawn = [randint(0, display_width), 0]
         return EnemySpawn
     if SpawnLocation == 2:
-        EnemySpawn = [randint(0, displayWidth), displayHeight]
+        EnemySpawn = [randint(0, display_width), display_height]
         return EnemySpawn
     if SpawnLocation == 3:
-        EnemySpawn = [0, randint(0, displayHeight)]
+        EnemySpawn = [0, randint(0, display_height)]
         return EnemySpawn
     if SpawnLocation == 4:
-        EnemySpawn = [displayWidth, randint(0, displayHeight)]
+        EnemySpawn = [display_width, randint(0, display_height)]
         return EnemySpawn
 
 

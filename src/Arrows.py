@@ -1,6 +1,6 @@
 
-from Game_Files.Character_CLASS import *
-from Game_Files.General_Game_Functions import *
+from Character import *
+from General_Game_Functions import *
 
 ARROW_LIST = []
 ENEMY_LIST = []
@@ -59,7 +59,7 @@ class Arrow:
         self.hitEpicenter[1] += yMove
 
         index = 0
-        if self.currentArrowPos[0] < -64 or self.currentArrowPos[1] > displayWidth or self.currentArrowPos[1] < -64 or self.currentArrowPos[1] > displayHeight:
+        if self.currentArrowPos[0] < -64 or self.currentArrowPos[1] > display_width or self.currentArrowPos[1] < -64 or self.currentArrowPos[1] > display_height:
             ARROW_LIST.pop(index)
 
 

@@ -1,5 +1,6 @@
+import math
 
-from Game_Files.Image_Imports import *
+from sprite_definitions import *
 
 class Character:
 
@@ -12,7 +13,7 @@ class Character:
         self.hitBox = 50
         self.hitEpicenter = 0
 
-        self.spawnPos = [displayWidth * 0.5, displayHeight * 0.5]  # Initialized to the center of the screen
+        self.spawnPos = [display_width * 0.5, display_height * 0.5]  # Initialized to the center of the screen
         self.currentPlayerPos = [0, 0]
         self.playerAngle = 0
         self.playerRotation = None

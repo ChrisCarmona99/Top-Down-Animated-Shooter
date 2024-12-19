@@ -2,12 +2,10 @@
 # Basic imports
 import pygame
 import os
-import sys
 import ctypes
 
 from pygame.locals import *
 from random import *
-import math
 
 
 # Creates the display for pygame
@@ -15,15 +13,22 @@ pygame.init()
 pygame.mixer.init()
 clock = pygame.time.Clock()
 
-ctypes.windll.user32.SetProcessDPIAware()
 
-displayWidth = ctypes.windll.user32.GetSystemMetrics(0)
-displayHeight = ctypes.windll.user32.GetSystemMetrics(1)
-# displayWidth = ctypes.windll.user32.GetSystemMetrics(0) - 200
-# displayHeight = ctypes.windll.user32.GetSystemMetrics(1) - 200
-flags = FULLSCREEN | DOUBLEBUF
+try:
+    ctypes.windll.user32.SetProcessDPIAware()
+    display_width = ctypes.windll.user32.GetSystemMetrics(0)
+    display_height = ctypes.windll.user32.GetSystemMetrics(1)
+    # display_width = ctypes.windll.user32.GetSystemMetrics(0) - 200
+    # display_height = ctypes.windll.user32.GetSystemMetrics(1) - 200
+except:
+    info = pygame.display.Info()
+    display_width, display_height = info.current_w, info.current_h
+
+# flags = FULLSCREEN | DOUBLEBUF
 # flags = FULLSCREEN | SCALED
-screen = pygame.display.set_mode( (displayWidth, displayHeight), flags, 16)
+
+# screen = pygame.display.set_mode( (display_width, display_height), flags, 32)
+screen = pygame.display.set_mode(size=(display_width, display_height), depth=32)
 
 screen.set_alpha(None)
 
@@ -53,38 +58,38 @@ BROWN = (139, 69, 19) # "saddlebrown"
 # Loads all the game images:
 basePath = os.path.dirname(__file__)
 
-highResBackground = pygame.image.load( os.path.join(basePath, "GameResources/Dirt_Background_1200x800_HighRes.png") ).convert()
-Help_PIC = pygame.image.load( os.path.join(basePath, "GameResources/Help_PIC.png") ).convert()
+highResBackground = pygame.image.load( os.path.join(basePath, "images/Dirt_Background_1200x800_HighRes.png") ).convert()
+Help_PIC = pygame.image.load( os.path.join(basePath, "images/Help_PIC.png") ).convert()
 
-player = pygame.image.load( os.path.join(basePath, "GameResources/PixelGunman_84x59.png") )
+player = pygame.image.load( os.path.join(basePath, "images/PixelGunman_84x59.png") )
 
-Gold_1 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_1.png") )
-Gold_2 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_2.png") )
-Gold_3 = pygame.image.load( os.path.join(basePath, "GameResources/Gold_3.png") )
+Gold_1 = pygame.image.load( os.path.join(basePath, "images/Gold_1.png") )
+Gold_2 = pygame.image.load( os.path.join(basePath, "images/Gold_2.png") )
+Gold_3 = pygame.image.load( os.path.join(basePath, "images/Gold_3.png") )
 
-Health_Potion = pygame.image.load( os.path.join(basePath, "GameResources/Health_Potion.png") )
+Health_Potion = pygame.image.load( os.path.join(basePath, "images/Health_Potion.png") )
 
-Iron_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Basic_Arrow_32x7.png") )
-Steel_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Steel_Arrow_32x7.png") )
-Hollowpoint_Arrow = pygame.image.load(os.path.join(basePath, "GameResources/HollowPoint_Arrow_32x7.png"))
-Tri_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Tri_Arrow_32x7.png") )
-Frost_Arrow = pygame.image.load( os.path.join(basePath, "GameResources/Frost_Arrow_32x7.png") )
+Iron_Arrow = pygame.image.load( os.path.join(basePath, "images/Basic_Arrow_32x7.png") )
+Steel_Arrow = pygame.image.load( os.path.join(basePath, "images/Steel_Arrow_32x7.png") )
+Hollowpoint_Arrow = pygame.image.load(os.path.join(basePath, "images/HollowPoint_Arrow_32x7.png"))
+Tri_Arrow = pygame.image.load( os.path.join(basePath, "images/Tri_Arrow_32x7.png") )
+Frost_Arrow = pygame.image.load( os.path.join(basePath, "images/Frost_Arrow_32x7.png") )
 
-fireball = pygame.image.load( os.path.join(basePath, "GameResources/Fireball_60x23.png") )
+fireball = pygame.image.load( os.path.join(basePath, "images/Fireball_60x23.png") )
 
-# enemy_Boss_one = pygame.image.load( os.path.join(basePath, "GameResources/") )
-# enemy_Boss_two = pygame.image.load( os.path.join(basePath, "GameResources/") )
-# enemy_Boss_three = pygame.image.load( os.path.join(basePath, "GameResources/") )
+# enemy_Boss_one = pygame.image.load( os.path.join(basePath, "images/") )
+# enemy_Boss_two = pygame.image.load( os.path.join(basePath, "images/") )
+# enemy_Boss_three = pygame.image.load( os.path.join(basePath, "images/") )
 
-enemy_one = pygame.image.load( os.path.join(basePath, "GameResources/PixelEnemy_1_48x56.png") )
-enemy_two = pygame.image.load( os.path.join(basePath, "GameResources/PixelEnemy_2_62x62.png") )
-enemy_three = pygame.image.load( os.path.join(basePath, "GameResources/PixelEnemy_3_140x54.png") )
-enemy_four = pygame.image.load( os.path.join(basePath, "GameResources/PixelEnemy_4_58x72.png") )
+enemy_one = pygame.image.load( os.path.join(basePath, "images/PixelEnemy_1_48x56.png") )
+enemy_two = pygame.image.load( os.path.join(basePath, "images/PixelEnemy_2_62x62.png") )
+enemy_three = pygame.image.load( os.path.join(basePath, "images/PixelEnemy_3_140x54.png") )
+enemy_four = pygame.image.load( os.path.join(basePath, "images/PixelEnemy_4_58x72.png") )
 
 
 
-highResBackground = pygame.transform.scale(highResBackground, (displayWidth, displayHeight)).convert()
-Help_PIC = pygame.transform.scale(Help_PIC, ( round(Help_PIC.get_rect()[2] * (displayHeight/Help_PIC.get_rect()[3]) ), round(Help_PIC.get_rect()[3] * (displayHeight/Help_PIC.get_rect()[3])) ) ).convert()
+highResBackground = pygame.transform.scale(highResBackground, (display_width, display_height)).convert()
+Help_PIC = pygame.transform.scale(Help_PIC, ( round(Help_PIC.get_rect()[2] * (display_height/Help_PIC.get_rect()[3]) ), round(Help_PIC.get_rect()[3] * (display_height/Help_PIC.get_rect()[3])) ) ).convert()
 
 player = pygame.transform.scale( player, ( round(player.get_rect()[2] * 1.3) ,  round(player.get_rect()[3] * 1.3) ) ).convert_alpha()
 
@@ -178,8 +183,8 @@ Sell_TEXT = PRICE_FONT.render( "Sell", True, WHITE )
 
 
 # INITIALIZE BUTTON COORDINATES:
-CONTINUE_COOR = ( displayWidth - CONTINUE[0] - 50, displayHeight - CONTINUE[1] - 50 )
-Continue_TEXT_COOR = ( displayWidth - CONTINUE[0] / 2 - Continue_TEXT.get_rect().width / 2 - 50, displayHeight - CONTINUE[1] / 2 - Continue_TEXT.get_rect().height / 2 - 50 )
+CONTINUE_COOR = ( display_width - CONTINUE[0] - 50, display_height - CONTINUE[1] - 50 )
+Continue_TEXT_COOR = ( display_width - CONTINUE[0] / 2 - Continue_TEXT.get_rect().width / 2 - 50, display_height - CONTINUE[1] / 2 - Continue_TEXT.get_rect().height / 2 - 50 )
 ARROW_BUTTON_COOR = ( 200, 1100 ) # Sets the top left button... all other buttons are oriented to this button for rearrangement simplicity
 BUY_BUTTON_COOR = ( 400, 800 )
 SELL_BUTTON_COOR = (650, 800)
@@ -192,7 +197,7 @@ ITEM_SLOT3_COOR = (HOTBAR_ARMORY_COOR[0] + ARMORY_ITEM_SLOT[0] * 2, HOTBAR_ARMOR
 ITEM_SLOT4_COOR = (HOTBAR_ARMORY_COOR[0] + ARMORY_ITEM_SLOT[0] * 3, HOTBAR_ARMORY_COOR[1])
 
     # Gameplay HotBar coordinates:
-HOTBAR_GAMEPLAY_COOR = (displayWidth / 2 - GAMEPLAY_ITEM_SLOT[0] * 2, displayHeight - 150)
+HOTBAR_GAMEPLAY_COOR = (display_width / 2 - GAMEPLAY_ITEM_SLOT[0] * 2, display_height - 150)
 ITEM_SLOT1_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0], HOTBAR_GAMEPLAY_COOR[1])
 ITEM_SLOT2_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0] + GAMEPLAY_ITEM_SLOT[0], HOTBAR_GAMEPLAY_COOR[1])
 ITEM_SLOT3_GAMEPLAY_COOR = (HOTBAR_GAMEPLAY_COOR[0] + GAMEPLAY_ITEM_SLOT[0] * 2, HOTBAR_GAMEPLAY_COOR[1])

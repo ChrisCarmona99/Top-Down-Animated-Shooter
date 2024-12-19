@@ -1,5 +1,5 @@
 
-from Game_Files.Character_CLASS import *
+from Character import *
 
 class Item:
 

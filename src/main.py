@@ -1,11 +1,10 @@
 
 # Import Files:
-import math
-import random
+import sys
 
-from Game_Files.General_Game_Functions import *
-from Game_Files.Arrows_CLASS import *
-from Game_Files.HotBar_CLASS import *
+from General_Game_Functions import *
+from Arrows import *
+from HotBar import *
 
 
 HotBar = DoublyLinkedList()
@@ -43,9 +42,9 @@ def MAIN_MENU():
         pygame.draw.rect(screen, DARKGREY, [centerText(HELP)[0], centerText(HELP)[1] + 300, HELP[0], HELP[1]])
         pygame.draw.rect(screen, DARKGREY, [centerText(EXIT_GAME)[0], centerText(EXIT_GAME)[1] + 600, EXIT_GAME[0], EXIT_GAME[1]])
 
-        screen.blit( Play_TEXT, ( displayWidth / 2 - Play_TEXT.get_rect().width / 2, displayHeight / 2 - Play_TEXT.get_rect().height/2 ) )
-        screen.blit( Help_TEXT, ( displayWidth / 2 - Help_TEXT.get_rect().width / 2, displayHeight / 2 - Help_TEXT.get_rect().height / 2 + 300) )
-        screen.blit( Exit_TEXT, ( displayWidth / 2 - Exit_TEXT.get_rect().width / 2, displayHeight / 2 - Exit_TEXT.get_rect().height / 2 + 600))
+        screen.blit( Play_TEXT, ( display_width / 2 - Play_TEXT.get_rect().width / 2, display_height / 2 - Play_TEXT.get_rect().height/2 ) )
+        screen.blit( Help_TEXT, ( display_width / 2 - Help_TEXT.get_rect().width / 2, display_height / 2 - Help_TEXT.get_rect().height / 2 + 300) )
+        screen.blit( Exit_TEXT, ( display_width / 2 - Exit_TEXT.get_rect().width / 2, display_height / 2 - Exit_TEXT.get_rect().height / 2 + 600))
 
         if playBorder:
             pygame.draw.rect(screen, WHITE, [centerText(PLAY)[0], centerText(PLAY)[1], PLAY[0], PLAY[1]], 4)
@@ -216,13 +215,13 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
         ITEM_COLLISION_CONTROL()
 
         # HUD CONTROL:
-        pygame.draw.rect(screen, DARKGREY, [0, 0, displayWidth, 80]) # Draws grey rectangle at top of screen
+        pygame.draw.rect(screen, DARKGREY, [0, 0, display_width, 80]) # Draws grey rectangle at top of screen
         Player1.updateHealthBar()  # Updates player's health bar
         FONT = pygame.font.SysFont("Times New Roman, Ariel", 50)
         PlayerScore_TEXT = FONT.render("Score: " + str(Player1.playerScore), True, WHITE)
         PlayerGold_TEXT = FONT.render("Gold: " + str(Player1.INVENTORY.get('Gold')), True, WHITE)
-        screen.blit( PlayerScore_TEXT, ( displayWidth - 250, 15 ) )
-        screen.blit( PlayerGold_TEXT, ( displayWidth - 750, 15 ) )
+        screen.blit( PlayerScore_TEXT, ( display_width - 250, 15 ) )
+        screen.blit( PlayerGold_TEXT, ( display_width - 750, 15 ) )
 
 
         # Player Death Logic:
@@ -312,9 +311,9 @@ def GAMEPLAY(EnemyCount, CountDownSet, currentRound):
             move[2] = False
         if Player1.spawnPos[1] <= 80:
             move[0] = False
-        if Player1.spawnPos[0] >= displayWidth:
+        if Player1.spawnPos[0] >= display_width:
             move[3] = False
-        if Player1.spawnPos[1] >= displayHeight:
+        if Player1.spawnPos[1] >= display_height:
             move[1] = False
 
         if Shooting:
@@ -469,8 +468,8 @@ def ARMORY_MENU(selectedHotBar):
 
 
             # Continue Button Hover Highlight
-            if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
-                    displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
+            if display_width - CONTINUE[0] - 50 <= mousePos[0] <= display_width - 50 and \
+                    display_height - CONTINUE[1] - 50 <= mousePos[1] <= display_height - 50:
                 continueBorder = True
             else:
                 continueBorder = False
@@ -480,8 +479,8 @@ def ARMORY_MENU(selectedHotBar):
             if event.type == MOUSEBUTTONDOWN:
 
                 # Continue Button Functionality:
-                if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
-                   displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
+                if display_width - CONTINUE[0] - 50 <= mousePos[0] <= display_width - 50 and \
+                   display_height - CONTINUE[1] - 50 <= mousePos[1] <= display_height - 50:
                     continueClickedBorder = True
 
                 # Arrow Select Button Functionality:
@@ -710,8 +709,8 @@ def ARMORY_MENU(selectedHotBar):
 
 
                 # Continue Button Functionality:
-                if displayWidth - CONTINUE[0] - 50 <= mousePos[0] <= displayWidth - 50 and \
-                   displayHeight - CONTINUE[1] - 50 <= mousePos[1] <= displayHeight - 50:
+                if display_width - CONTINUE[0] - 50 <= mousePos[0] <= display_width - 50 and \
+                   display_height - CONTINUE[1] - 50 <= mousePos[1] <= display_height - 50:
                     runningGame, runningArmoryMenu = True, False
 
 
@@ -733,10 +732,10 @@ def HELP_MENU():
 
     while runningHelpMenu:
         screen.fill(GOLDENROD)
-        screen.blit(Help_PIC, (displayWidth * 0.5 - (Help_PIC.get_rect().width / 2), 0))
+        screen.blit(Help_PIC, (display_width * 0.5 - (Help_PIC.get_rect().width / 2), 0))
 
-        x = (((displayWidth * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (HELP_MENU_BACK[0] / 2))
-        y = (((displayWidth * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (HELP_MENU_BACK[0] / 2))
+        x = (((display_width * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (HELP_MENU_BACK[0] / 2))
+        y = (((display_width * 0.5 - (Help_PIC.get_rect().width / 2)) / 2) - (HELP_MENU_BACK[0] / 2))
 
         pygame.draw.rect(screen, DARKGREY, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]])
         pygame.draw.rect(screen, BLACK, [x, y, HELP_MENU_BACK[0], HELP_MENU_BACK[1]], 4)
@@ -787,8 +786,8 @@ def PAUSE_MENU():
         pygame.draw.rect(screen, LIGHTGREY, [centerText(PAUSE_BACKGROUND)[0], centerText(PAUSE_BACKGROUND)[1], PAUSE_BACKGROUND[0], PAUSE_BACKGROUND[1]])
         pygame.draw.rect(screen, DARKGREY, [centerText(RESUME)[0], centerText(RESUME)[1], RESUME[0], RESUME[1]])
         pygame.draw.rect(screen, DARKGREY, [centerText(QUIT)[0], centerText(QUIT)[1] + 300, QUIT[0], QUIT[1]])
-        screen.blit(Resume_TEXT, ( displayWidth / 2 - Resume_TEXT.get_rect().width / 2, displayHeight / 2 - Resume_TEXT.get_rect().height / 2))
-        screen.blit(MainMenu_TEXT, ( displayWidth / 2 - MainMenu_TEXT.get_rect().width / 2, displayHeight / 2 - MainMenu_TEXT.get_rect().height / 2 + 300))
+        screen.blit(Resume_TEXT, ( display_width / 2 - Resume_TEXT.get_rect().width / 2, display_height / 2 - Resume_TEXT.get_rect().height / 2))
+        screen.blit(MainMenu_TEXT, ( display_width / 2 - MainMenu_TEXT.get_rect().width / 2, display_height / 2 - MainMenu_TEXT.get_rect().height / 2 + 300))
 
         if resumeBorder:
             pygame.draw.rect(screen, WHITE, [centerText(RESUME)[0], centerText(RESUME)[1], RESUME[0], RESUME[1]], 4)
@@ -864,7 +863,7 @@ def DRAW_GAMEOVER():
 
     while drawGameOver:
         pygame.draw.rect( screen, DARKGREY, [ centerText(YOU_DIED_BACKGROUND)[0], centerText(YOU_DIED_BACKGROUND)[1], YOU_DIED_BACKGROUND[0], YOU_DIED_BACKGROUND[1] ] )
-        screen.blit( You_Died_TEXT, ( displayWidth / 2 - You_Died_TEXT.get_rect().width / 2, displayHeight / 2 - You_Died_TEXT.get_rect().height / 2 ) )
+        screen.blit( You_Died_TEXT, ( display_width / 2 - You_Died_TEXT.get_rect().width / 2, display_height / 2 - You_Died_TEXT.get_rect().height / 2 ) )
         gameOverTimer -= 1
         if gameOverTimer == 0:
             drawGameOver = False
@@ -889,8 +888,8 @@ def GAMEOVER_MENU():
         pygame.draw.rect( screen, LIGHTGREY, [ centerText(GAMEOVER_BACKGROUND)[0], centerText(GAMEOVER_BACKGROUND)[1], GAMEOVER_BACKGROUND[0], GAMEOVER_BACKGROUND[1] ] )
         pygame.draw.rect( screen, DARKGREY, [ centerText(PLAY_AGAIN)[0], centerText(PLAY_AGAIN)[1], PLAY_AGAIN[0], PLAY_AGAIN[1] ] )
         pygame.draw.rect( screen, DARKGREY, [centerText(EXIT)[0], centerText(EXIT)[1] + 300, EXIT[0], EXIT[1] ] )
-        screen.blit( Play_Again_TEXT, ( displayWidth / 2 - Play_Again_TEXT.get_rect().width / 2, displayHeight / 2 - Play_Again_TEXT.get_rect().height / 2 ) )
-        screen.blit(Exit_TEXT, ( displayWidth / 2 - Exit_TEXT.get_rect().width / 2, displayHeight / 2 - Exit_TEXT.get_rect().height / 2 + 300 ) )
+        screen.blit( Play_Again_TEXT, ( display_width / 2 - Play_Again_TEXT.get_rect().width / 2, display_height / 2 - Play_Again_TEXT.get_rect().height / 2 ) )
+        screen.blit(Exit_TEXT, ( display_width / 2 - Exit_TEXT.get_rect().width / 2, display_height / 2 - Exit_TEXT.get_rect().height / 2 + 300 ) )
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
